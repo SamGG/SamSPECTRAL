@@ -1,0 +1,204 @@
+%
+% NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
+% likely to be overwritten.
+%
+
+
+%\VignetteIndexEntry{A modified spectral clustering method for clustering Flow Cytometry Data}
+%\VignetteDepends{SamSPECTRAL}
+%\VignetteKeywords{}
+%\VignettePackage{SamSPECTRAL}
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\author{Parisa Shooshtari and Habil zare}
+
+\begin{document}
+\title{SamSPECTRAL: A modified spectral clustering method for clustering Flow Cytometry Data}
+\maketitle{}
+
+\section{Introduction} 
+Data analysis is a crucial step in most of recent biological research areas such as microarray techniques, gene expression and protein classification. A classical approach for analysing biological data is to first group individual data points based on some similarity criterion,
+a process known as clustering, and then compare the outcome of clustering with the desired biological hypotheses. Spectral clustering is a non-parametric clustering method 
+%%(\citealp{spectral_tutorial})  
+which has proved useful in many pattern recognition areas. 
+%%(\citealp{first_spectral}). 
+Not only it does not require a priori assumptions on the size, shape and distributions of clusters, but it has several features that make it an appropriate candidate for clustering biological data:
+
+
+\begin{itemize}
+	\item It is not sensitive to outliers, noise or shape of clusters.
+
+	\item It is adjustable so we can make use of biological knowledge to adapt it for a specific problem or dataset.
+
+	\item There is mathematical evidence to guarantee its proper performance.
+		 %%(\citealp{spectral_theory}).
+\end{itemize}
+
+However, because of the machine limitations, one faces serious empirical barriers in applying this method for large data sets. SamSPECTRAL is a modification to spectral clustering such that it will be applicable on large size datasets. 
+
+
+
+\section{How to run SamSPECTRAL?}
+The main function of this package is SamSPECTRAL. By loading it using the command library(SamSPECTRAL) in R, some parameters are also set including: dimensions, space.length, normal.sigma, separation.factor, maximum.number.of.clusters. These parameters should be adjusted for each data set by running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in the data set to identify cell populations in each sample data.
+
+
+
+
+\subsection{An example}
+
+This example shows how SamSPECTRAL can be run on flow cytometry data. If the data is to be read from an FSC file using flowCore, the object stmFSC should be replaced by the object that flowCore  provides.
+
+
+
+\begin{center}
+<<f_example,fig=TRUE, echo=TRUE>>=
+    library(SamSPECTRAL)
+    data(small_data)
+	full <- small
+	
+    L <- SamSPECTRAL(full,c(1,2,3), normal.sigma = 200, separation.factor = 0.39)   
+	plot(full, pch='.', col= L)
+@
+\end{center}
+
+
+
+\section{Adjusting parameters}
+
+For efficiency, one can set $m=3000$ to keep the running time bellow 1 minute by a 2 GHz processor and normally the obtain results remained satisfactory for flow cytometry data. The separation factor and scaling parameter ($\sigma$) are two main parameters that needed to be adjusted.
+The general way is to run SamSPECTRAL on one or two random data samples of a flow cytometry data set and try different values for $\sigma$ and separation factor. Then, the selected parameters were fixed and used to apply SamSPECTRAL on the rest of data samples. An efficient strategy is explained by the following example.
+
+
+
+\subsection{Example}
+  First we load data and store the transformed coordinates in a matrix called $full$:
+
+<<ReadFiles2, echo=true,results=verbatim>>=
+
+    data(small_data)
+	full <- small
+@
+
+
+The following parameters are rarely needed to be changed for flow cytometry data:
+
+
+<<ReadFiles2, echo=true,results=verbatim>>=	
+	# Parameters:
+    m <- 3000; 
+    community.weakness.threshold <-1; precision <- 6; 
+	maximum.number.of.clusters <- 30    
+@
+ 
+The following piece of code, scales the coordinates in range [0,1]:
+<<ReadFiles2, echo=true,results=verbatim>>=	
+	for (i.column in 1:dim(full)[2]){#For all columns
+		ith.column <- full[,i.column]
+		full[,i.column] <- ith.column /(max(ith.column) - min(ith.column) )  # This is the scaled column.
+	}#End for (i.column.
+	# Therefore, 	
+	space.length <- 1
+@
+
+To perform faithful sampling, we run:
+<<f_sampling,fig=TRUE, echo=true,results=verbatim>>=	
+	# Sample the data and build the communities 
+    society <- Building_Communities(full,m, space.length, community.weakness.threshold)
+	plot(full[society$representatives, ], pch=20)
+@
+
+
+
+
+We intend to first find an appropriate value for $\sigma$ and then set separation factor. We start with normal.sigma=10:
+<<f_small,fig=TRUE, echo=true,results=verbatim>>=	
+	normal.sigma <- 10
+    # Compute conductance between communities
+    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+    # Compute the eigenspace:
+    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance)    
+	eigen.values <- clust_result@eigen.space$values
+ 	plot(eigen.values[1:50])
+@
+
+
+
+
+We observe that the eigen values curve does not have a "knee" shape. So we increase sigma:
+<<f_large,fig=TRUE, echo=true,results=verbatim>>=	
+	normal.sigma <- 1000
+    # Compute conductance between communities
+    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+    # Compute the eigenspace:
+    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance)    
+	eigen.values <- clust_result@eigen.space$values
+ 	plot(eigen.values[1:50])
+@
+
+
+We observe that in the eigen values plot, "too many" values are close to 1 but for this example we do not expect 20 populations. So we decrease sigma:
+<<f_appropriate,fig=TRUE, echo=true,results=verbatim>>=	
+	normal.sigma <- 250
+    # Compute conductance between communities
+    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+    # Compute the eigenspace:
+    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance)    
+	eigen.values <- clust_result@eigen.space$values
+ 	plot(eigen.values[1:50])
+@
+
+This is "a right" value for normal.sigma because the curve has now a knee shape. Even some variation to this parameter does not change the shape significantly (200 or 300 can be tried). 
+
+Now having sigma been adjusted, separation factor can be tuned:
+<<f_sep1,fig=TRUE, echo=true,results=verbatim>>=	
+	# Extracting labels:
+    labels.for_nom.of.clusters <- clust_result@labels.for_nom.of.clusters
+	number.of.clusters <- clust_result@number.of.clusters
+    L33 <- labels.for_nom.of.clusters[[number.of.clusters]]
+	# Setting septation factor:
+	separation.factor <- 0.1
+	# post-processing:
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor)
+	# ploting:
+    plot(full, pch='.', col= component.of)
+@
+
+This value is too small and a population is combined by mistake. Therefore, we increase septation factor to separate the components more:
+<<f_sep2,fig=TRUE, echo=true,results=verbatim>>=	
+	# Setting septation factor:
+	separation.factor <- 0.5
+	# post-possesing:
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor)
+	# ploting:
+    plot(full, pch='.', col= component.of)
+@
+
+This is the right value for separator factor as all population are now separated. 
+
+Now, we can fix these values for the parameters; normal.sigma=250 and separation.factor=0.5. One can run the SamSPECTRAL algorithm on the rest of the data set without changing them, hopefully, obtaining as appropriate results. 
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
