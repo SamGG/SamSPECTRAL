@@ -53,7 +53,7 @@ The main function of this package is SamSPECTRAL. By loading it using the comman
 
 \subsection{An example}
 
-This example shows how SamSPECTRAL can be run on flow cytometry data. If the data is to be read from an FSC file using flowCore, the object stmFSC should be replaced by the object that flowCore  provides.
+This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is a flow frame (which is normally read from an FCS file using flowCore), then the object "small" in the following example should be replaced by expr($f$). 
 
 
 
@@ -63,7 +63,7 @@ This example shows how SamSPECTRAL can be run on flow cytometry data. If the dat
     data(small_data)
 	full <- small
 	
-    L <- SamSPECTRAL(full,c(1,2,3), normal.sigma = 200, separation.factor = 0.39)   
+    L <- SamSPECTRAL(full,dimension=c(1,2,3),normal.sigma = 200,separation.factor = 0.39)   
 	plot(full, pch='.', col= L)
 @
 \end{center}
@@ -159,13 +159,13 @@ This is "a right" value for normal.sigma because the curve has now a knee shape.
 Now having sigma been adjusted, separation factor can be tuned:
 <<f_sep1,fig=TRUE, echo=true,results=verbatim>>=	
 	# Extracting labels:
-    labels.for_nom.of.clusters <- clust_result@labels.for_nom.of.clusters
+    labels.for_num.of.clusters <- clust_result@labels.for_num.of.clusters
 	number.of.clusters <- clust_result@number.of.clusters
-    L33 <- labels.for_nom.of.clusters[[number.of.clusters]]
+    L33 <- labels.for_num.of.clusters[[number.of.clusters]]
 	# Setting septation factor:
 	separation.factor <- 0.1
 	# post-processing:
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor)
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)
 	# ploting:
     plot(full, pch='.', col= component.of)
 @
@@ -175,7 +175,7 @@ This value is too small and a population is combined by mistake. Therefore, we i
 	# Setting septation factor:
 	separation.factor <- 0.5
 	# post-possesing:
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor)
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)
 	# ploting:
     plot(full, pch='.', col= component.of)
 @

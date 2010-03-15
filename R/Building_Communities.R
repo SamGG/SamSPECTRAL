@@ -40,7 +40,7 @@
 # Good luck with implementing this idea!
 ###########################################################################
 
-Building_Communities <- function(full, m, space.length, community.weakness.threshold,talk=TRUE)
+Building_Communities <- function(full, m, space.length, community.weakness.threshold,talk=TRUE, do.sampling=TRUE)
 {
 	
 
@@ -131,15 +131,20 @@ Building_Communities <- function(full, m, space.length, community.weakness.thres
 				repres.num <- repres.num +1
 				repres.indeces[repres.num] <- i
 		
-				ccp <- Compute_Close_Points(repres.indeces[repres.num],nbhood, n, dimention, epsilon)
-				close.points <- ccp$close.points
-				epsilon <- ccp$epsilon
-				repres.density[repres.num] <- length(close.points)		
-		
+				if (do.sampling){
+					ccp <- Compute_Close_Points(repres.indeces[repres.num],nbhood, n, dimention, epsilon)
+					close.points <- ccp$close.points
+					epsilon <- ccp$epsilon
+					repres.density[repres.num] <- length(close.points)		
+				} else {	# No sampling will be done, every poit will make a cummunity.
+					close.points <- i
+					epsilon <- "not_sampled"
+					repres.density[repres.num] <- as.integer(1)
+				}#End if (do.sampling).
 				# Registering members; All of the close points to this representative who have not registered to a community before
 				# must register as members of this community.
 		
-				not.registered.neighbours <- close.points[which(registered[close.points]== FALSE)]	# All neighbours whaich have not alreay registered.
+				not.registered.neighbours <- close.points[which(registered[close.points]== FALSE)]	# All neighbours which have not alreay registered.
 
 				# Building the community
 				community[[repres.num]] <- list (repres = i, members = not.registered.neighbours)
@@ -152,7 +157,7 @@ Building_Communities <- function(full, m, space.length, community.weakness.thres
 		if(talk) message(paste("^--------^ communities have been build up."))
 
 		### breaking the repeat loop.bbbbbbbbbbbbbbbbbbbb
-		if( ( (repres.num < m ) & (repres.num > m/2 ))  | repres.num >= n)	break   			
+		if( ( (repres.num < m ) & (repres.num > m/2 ))  | repres.num >= n | !do.sampling)	break   			
     		                                                    # We break this loop only if we make sure that enough number of communities
 																# have been built (repres.num > m/2).
 																# The condision (repres.num < m) is to make sure the number of communities is not so high.

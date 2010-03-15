@@ -11,7 +11,7 @@
 }
 
 \usage{
-Building_Communities(full, m, space.length, community.weakness.threshold, talk=TRUE)
+Building_Communities(full, m, space.length, community.weakness.threshold, talk=TRUE, do.sampling=TRUE)
 }
 
 \arguments{
@@ -29,6 +29,9 @@ Building_Communities(full, m, space.length, community.weakness.threshold, talk=T
 
   \item{talk}{
     A boolean flag with default value TRUE. Setting it to FALSE will keep running the procedure quite with no messages.}
+
+  \item{do.sampling}{
+    A boolean flag with default value TRUE. If set to FALSE, the sampling stage will be ignored by picking up all the data points.}
 }
 
 \value{
@@ -51,11 +54,10 @@ Parisa Shooshtari and Habil Zare
 	
 	 \dontrun{
 	    library(SamSPECTRAL)
-    	data(stm)
-	   # Read data files and transform them using log transform
-		data.points <- exprs(stmFSC) 
-		dimensions <- c(3,4,7)
-		full <- log10(data.points[,dimensions])
+
+	   # Reading data file which has been transformed using log transform
+	    data(small_data)
+		full <- small
 	
 		# Parameters:
 		m <- 3000; ns <- 200; sl <- 3; cwt <-1

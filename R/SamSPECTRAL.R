@@ -3,7 +3,7 @@
 ##  L <- SamSPECTRAL(FC.FCSRobj ,dimensions)
 
 # Call libraries
-library(flowCore)
+# library(flowCore)
 
 # Call functions
 .First.lib <-
@@ -32,7 +32,7 @@ function(lib, pkg)
 ### MAIN function ###
 	################################################################ S T A R T ########################################################################
 SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.sigma=500, separation.factor=0.8, number.of.clusters=NA, 
-						talk=TRUE, precision=6, eigenvalues.num=NA ){ 
+						talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, do.sampling=TRUE){ 
 
 	if( class(data.points)!="matrix" ){  #Check if there are enough number of points, stored in the data.matrix.
 	    if(talk) message("BAD input for SamSPECTRAL!, maybe not a matrix.")
@@ -78,7 +78,7 @@ SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.s
 
     # Sample the data and build the communities
 	if(talk) message("Faithful sampling...")
-    society <- Building_Communities(full,m, space.length, community.weakness.threshold, talk=talk)
+    society <- Building_Communities(full,m, space.length, community.weakness.threshold, talk=talk, do.sampling=do.sampling)
     
     # Compute conductance between communities
 	if(talk) message("Conductance computation...")
@@ -89,7 +89,7 @@ SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.s
 					number.of.clusters=number.of.clusters, talk=talk, eigenvalues.num = eigenvalues.num)
     
     number.of.clusters <- clust_result@number.of.clusters
-    labels.for_nom.of.clusters <- clust_result@labels.for_nom.of.clusters
+    labels.for_nom.of.clusters <- clust_result@labels.for_num.of.clusters
     
     # Connect components
     component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor, talk=talk)
@@ -99,8 +99,11 @@ SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.s
 
 	################################################################# E N D ########################################################################
 	if(talk) message("Total time:"); if(talk) message(Sys.time()-t.SamSPECTRAL)
-	  
-    return(component.of)
+	if (return_only.labels){	  
+	    return(component.of)
+	} else {
+	    return(list(labels=component.of, society=society, conductance=conductance, clustering_result=clust_result) )
+	}
 }
 
 

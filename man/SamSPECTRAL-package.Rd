@@ -48,11 +48,10 @@ Shooshtari, P. and Zare, H. and Gupta, A. and Brinkman R.B. (2009). Faithful Sam
 
 	\dontrun{
 	    library(SamSPECTRAL)
-	    data(stm)
-	   # Read data files and transform them using log transform
-		data.points <- stmFSC@exprs  
-		dimensions <- c(3,4,7)
-		full <- log10(data.points[,dimensions])
+
+	   # Reading data file which has been transformed using log transform
+	    data(small_data)
+		full <- small
 		
 	    L <- SamSPECTRAL(data.points=full,dimensions=c(1,2,3), normal.sigma = 200, separation.factor = 0.39)
 	    

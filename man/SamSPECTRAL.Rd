@@ -12,7 +12,7 @@
 
 \usage{
 SamSPECTRAL(data.points, dimensions=colnames(data.points), normal.sigma = 500, separation.factor = 0.8,number.of.clusters = NA, 
-	talk = TRUE, precision = 6, eigenvalues.num =NA)
+	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE)
 }
 
 \arguments{
@@ -42,6 +42,13 @@ SamSPECTRAL(data.points, dimensions=colnames(data.points), normal.sigma = 500, s
   \item{eigenvalues.num}{
         An integer with default value NA which prevents ploting the curve of eigenvalues. Otherwise, they will be ploted upto this number.}
 
+  \item{return_only.labels}{
+        A boolean flag with default value TRUE. If the user set it to FALSE, SamSPECTRAL function will return all the intermediate objects 
+		that are computed during the sampling, similarity calculation, spectral clustering and combining stages.}
+
+  \item{do.sampling}{
+    A boolean flag with default value TRUE. If set to FALSE, the sampling stage will be ignored by picking up all the data points.}
+
 }
 
 \details{
@@ -52,14 +59,16 @@ SamSPECTRAL(data.points, dimensions=colnames(data.points), normal.sigma = 500, s
 
 
 \value{
-    Returns a vector of labels for data points.
+    Returns a vector of labels for data points. If the input parameter return_only.labels is set to FALSE, all the objects 
+		that are computed during the intermediate will be returned including: society for sampling stage, conductance for similarity calculation, and
+		clustering_result.
 }
 
 \references{
 Faithful Sampling for Spectral Clustering to Analyse High Throughput Biological Data.}
 
 \author{
-Parisa Shooshtari and Habil Zare }
+Habil Zare and Parisa Shooshtari}
 
 \seealso{
 \code{\link{SamSPECTRAL}}, \code{\link{Building_Communities}}, \code{\link{Conductance_Calculation}}, 
@@ -69,11 +78,10 @@ Parisa Shooshtari and Habil Zare }
 \examples{
 
     library(SamSPECTRAL)
-    data(stm)
-   # Read data files and transform them using log transform
-		data.points <- exprs(stmFSC) 
-	dimensions <- c(3,4,7)
-	full <- log10(data.points[,dimensions])
+
+   # Reading data file which has been transformed using log transform
+    data(small_data)
+	full <- small
 	
     L <- SamSPECTRAL(data.points=full,dimensions=c(1,2,3), normal.sigma = 200, separation.factor = 0.39)
     

@@ -14,7 +14,7 @@
 # ClusteringResult 
 ############################################################################################################################ 
 setClass("ClusteringResult",
-        representation(labels.for_nom.of.clusters="list", number.of.clusters="numeric", eigen.space="list"))
+        representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space="list"))
 #===========================================================================================================================
 
 
@@ -28,12 +28,6 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 	if(talk) message(t1)
 	################################################# S T A R T ###################################################
 
-	# Call libraries
-	#packaging
-	#library(mvtnorm)
-	#library(stats)
-	#library(flowCore)
-	#library(scatterplot3d)
 
 	# society
 	nbhood <- society$nbhood
@@ -99,7 +93,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 	if(talk) message("Runing kmeans...")
 	# Each element contains the labels for that number of clusters.
 	try(rm(.Random.seed),silent=TRUE)	# To remove the random seed which might be loaded from previouse workspace.	
-	labels.for_nom.of.clusters <- list()		
+	labels.for_num.of.clusters <- list()		
 	
 	############################ Estimating the number of clusters based on the "knee spot" ########################
 	if(is.na(number.of.clusters)){ # It needs to be determined "Automatically".
@@ -174,12 +168,12 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		}
 	
 		#if(talk) message(paste(centers, "clusters were distinguished!"))
-		labels.for_nom.of.clusters[[centers]] <- label
+		labels.for_num.of.clusters[[centers]] <- label
 
 	}# End of for loop for clustering.
 
 
-	result <- new('ClusteringResult', labels.for_nom.of.clusters = labels.for_nom.of.clusters, 
+	result <- new('ClusteringResult', labels.for_num.of.clusters = labels.for_num.of.clusters, 
 					number.of.clusters = number.of.clusters, eigen.space = eigen.space)
 	############################################# E N D ###################################################
 	if(talk) message(Sys.time()-t1)

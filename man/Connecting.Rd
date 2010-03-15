@@ -61,11 +61,10 @@ Parisa Shooshtari and Habil Zare
 
 	\dontrun{
 	    library(SamSPECTRAL)
-    	data(stm)
-	   # Read data files and transform them using log transform
-		data.points <- exprs(stmFSC) 
-		dimensions <- c(3,4,7)
-		full <- log10(data.points[,dimensions])
+
+	   # Reading data file which has been transformed using log transform
+	    data(small_data)
+		full <- small
 	
 		# Parameters:
 		m <- 3000; ns <- 200; sl <- 3; cwt <-1; precision <- 6; mnc <-30 

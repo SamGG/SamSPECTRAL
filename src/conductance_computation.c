@@ -144,31 +144,29 @@ SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
 {
 	SEXP community, returnVal, coordDim;	
 	int communityNum, memberLen, i, j, pointNum, dimention;
-	double * coords, nbhood, di, dj, epsilon, sigma, 
-		sumOfEdges, weightBetweenCommunities;
+	double * coords, nbhood, di, dj, sigma, 
+		sumOfEdges, weightBetweenCommunities; //epsilon
 	int *density, *repres_ind;
 
 	/* VARIATIONS: */
-	Rprintf("\n Strategy: sum of edges using exp formula.\n	");
+	//Rprintf("\n Strategy: sum of edges using exp formula.\n	");
+	//Rprintf("       betaa = %f\n",betaa);	
 
 	// To set the type from R to C.
 	PROTECT( society = coerceVector(society, VECSXP));	
 	PROTECT( coordinates = coerceVector(coordinates, REALSXP));	
 	PROTECT( sigmaVal = coerceVector(sigmaVal, REALSXP));
-
 	//// Computing the values of the parameters.
 	sigma = REAL(sigmaVal)[0];
 	PROTECT( coordDim = getAttrib(coordinates, R_DimSymbol));
     pointNum = INTEGER(coordDim)[0];
     dimention = INTEGER(coordDim)[1];
 	coords = REAL(coordinates);
-	 
 	// Reading information from society
 	nbhood = REAL(VECTOR_ELT(society, 0))[0];		// nbhood
 
 	// The indeces 	of the representatives.
 	repres_ind = INTEGER(VECTOR_ELT(society, 1));	
-
 	// society is a list which has the communities as its third argumant.
 	PROTECT( community = VECTOR_ELT(society, 2));	
 	
@@ -178,10 +176,8 @@ SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
 	// An estimate for the density of the represantative 
 	//which is equal to the population of th ecommunity.
 	density = INTEGER(VECTOR_ELT(society, 3));
-													
 	// Almost the minimum distance between the points in the data.
-	epsilon = REAL(VECTOR_ELT(society, 4))[0];		
-	
+	//epsilon = REAL(VECTOR_ELT(society, 4))[0]; not needed for now.		
 
 
 
@@ -190,8 +186,7 @@ SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
 
 	// Allocate memory for returning value to R which is kept in a matrix..
     PROTECT(returnVal = allocMatrix(REALSXP, communityNum, communityNum));	
-
-	Rprintf("       betaa = %f\n",betaa);					
+				
 	// Used and explained  in function: CommunityConductance().
 
 	// For any pair of communities,
