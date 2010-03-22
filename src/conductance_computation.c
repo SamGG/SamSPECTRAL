@@ -3,7 +3,11 @@
 #include <Rmath.h>
 
 
-static double betaa = 4;
+//static double betaa = 4;	
+	// If two communities are further than betta*nbhood, 
+	//then their conductance will be computed much faster 
+	//by multiplying their representatives conductance by 
+	//their number of members.
 
 // MACROs; Faster way than calling a function: 
 // The index (i,j) in matrix M having n rows. i and j start from 0. 
@@ -51,7 +55,7 @@ inline double Distance_power2(double *c, int pNum, int d, int ind1, int ind2)
 // The following function computes the conductance between the two communities.
 //Currently,we are just adding the conductance of all of the edges between them.
 double compute_sum_of_edges(double *coordinates, int pointNum, int dimention, 
-			double nbhood, SEXP community, int ind1, int ind2, double sigma)
+			double nbhood, SEXP community, int ind1, int ind2, double sigma, double betaa)
 {
 	int i, j, length1, length2;
 	double kAprrox, sum, result;
@@ -79,7 +83,6 @@ double compute_sum_of_edges(double *coordinates, int pointNum, int dimention,
 	length1 = length(VECTOR_ELT(community_ind1, 1));
 	length2 = length(VECTOR_ELT(community_ind2, 1));
 
-
 	
 
  	if ( sqrt(Distance_power2(coordinates, pointNum, dimention, 
@@ -91,7 +94,7 @@ double compute_sum_of_edges(double *coordinates, int pointNum, int dimention,
 					RESISTANCE(coordinates, pointNum, dimention, 
 						repres_ind1, repres_ind2, sigma);
 		
-		/*//To test:
+		/*//To test: 
 		if (ind1 ==2 -1 && ind2==1322 -1){
 			Rprintf("\n length1 = %d\n", length1);
 			Rprintf("\n length2 = %d\n", length2);
@@ -110,10 +113,11 @@ double compute_sum_of_edges(double *coordinates, int pointNum, int dimention,
 		//Picture 3 explains the following formulas 
 		//for calculating the normal cut.
 		sum =0;
-		for (i=0; i<length1; i++)								
-		// To add the conductance of all edges between the two communities. 
-		// Loot at picture 2 for the mening of the formula 
-		//used to compute conductance.
+		for (i=0; i<length1; i++){								
+			//Rprintf("\n i = %d \n",i);
+			// To add the conductance of all edges between the two communities. 
+			// Look at picture 2 for the meaning of the formula 
+			//used to compute conductance.
 			for (j=0; j<length2; j++){
 
 				sum += 1/RESISTANCE(coordinates, pointNum, dimention, 
@@ -126,6 +130,7 @@ double compute_sum_of_edges(double *coordinates, int pointNum, int dimention,
 				//Rprintf("\n member_ind1[i] = %d \n",member_ind1[i]);
 				//Rprintf("\n member_ind2[j] = %d \n",member_ind2[j]);
 			}
+		}
  
 		result= sum;
 	}
@@ -139,25 +144,29 @@ double compute_sum_of_edges(double *coordinates, int pointNum, int dimention,
 
 
 // To compute the contuctance between all communites.
-// "coordinates" contains the coordinates of all points iin the data.
-SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
+// "coordinates" contains the coordinates of all points in the data.
+//SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal, SEXP betaVal)
+SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal, SEXP betaVal)
 {
 	SEXP community, returnVal, coordDim;	
 	int communityNum, memberLen, i, j, pointNum, dimention;
-	double * coords, nbhood, di, dj, sigma, 
-		sumOfEdges, weightBetweenCommunities; //epsilon
+	double * coords, nbhood, di, dj, sigma, betaa,
+			sumOfEdges, weightBetweenCommunities; //epsilon
 	int *density, *repres_ind;
 
 	/* VARIATIONS: */
 	//Rprintf("\n Strategy: sum of edges using exp formula.\n	");
-	//Rprintf("       betaa = %f\n",betaa);	
+
 
 	// To set the type from R to C.
 	PROTECT( society = coerceVector(society, VECSXP));	
 	PROTECT( coordinates = coerceVector(coordinates, REALSXP));	
 	PROTECT( sigmaVal = coerceVector(sigmaVal, REALSXP));
+	PROTECT( betaVal = coerceVector(betaVal, REALSXP));
 	//// Computing the values of the parameters.
 	sigma = REAL(sigmaVal)[0];
+	betaa = REAL(betaVal)[0];
+	if (betaa!=4.0) Rprintf("       betaa = %f\n",betaa);	
 	PROTECT( coordDim = getAttrib(coordinates, R_DimSymbol));
     pointNum = INTEGER(coordDim)[0];
     dimention = INTEGER(coordDim)[1];
@@ -191,8 +200,9 @@ SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
 
 	// For any pair of communities,
 	// we should compute the normalized cut between them.
-	for (i=0; i< communityNum; i++)
-    	for (j=0; j< communityNum; j++)
+	for (i=0; i< communityNum; i++){
+		//Rprintf("\n i = %d \n",i);
+    	for (j=0; j< communityNum; j++){
     		if (i==j)
 	    		REAL(returnVal)[i+j*communityNum] = 0;	// Not important. 
 	    	else{
@@ -200,7 +210,7 @@ SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
 				// We are using the sum of edge conductance 
 				//as an estimate for community conductance.	
 				sumOfEdges= compute_sum_of_edges(coords, pointNum, dimention, 
-								nbhood, community, i, j, sigma);	    		
+								nbhood, community, i, j, sigma, betaa);	    		
 				weightBetweenCommunities = sumOfEdges;	
 				// This is JUST the enumarator of the normal cut.
 				
@@ -216,8 +226,10 @@ SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal)
 	
 				REAL(returnVal)[i+j*communityNum] =	weightBetweenCommunities;
 			}
+		}
+	}
 
-  	UNPROTECT(6);
+  	UNPROTECT(7);
 	return returnVal;	
 }
 

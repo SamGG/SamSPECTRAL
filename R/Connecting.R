@@ -26,14 +26,14 @@
 
 
 
-Connecting <- function(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor, talk=TRUE)
+Connecting <- function(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor, talk=TRUE)
 {
 
 	# Compute indices of points in cluster j from the output of civilized spcetral clustering
 	number.of.clusters.from.spectral <- number.of.clusters			
 
 	### The clusters
-	labels <-labels.for_nom.of.clusters[[number.of.clusters.from.spectral]]
+	labels <-labels.for_num.of.clusters[[number.of.clusters.from.spectral]]
 	repres.cluster	<-list()
 	cluster<- list()
 	

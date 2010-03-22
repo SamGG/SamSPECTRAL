@@ -10,7 +10,7 @@ For each two communities, the conductance between their members is summed up and
 }
 
 \usage{
-Conductance_Calculation(full, normal.sigma, space.length, society, precision, talk=TRUE)
+Conductance_Calculation(full, normal.sigma, space.length, society, precision, talk=TRUE, beta=4)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,6 +31,11 @@ Conductance_Calculation(full, normal.sigma, space.length, society, precision, ta
 
   \item{talk}{
     A boolean flag with default value TRUE. Setting it to FALSE will keep running the procedure quite with no messages.}
+
+  \item{beta}{
+    A parameter with default value 4 which must NOT be changed except for huge samples with more than 100,000 data points or for developmental purposes.
+ 	Setting beta to zero will reduce computational time by applying the following approximation to the conductance calculation step. 
+	For each two community, the conductance will be the conductance between their representatives times their sizes.}
 }
 
 \value{

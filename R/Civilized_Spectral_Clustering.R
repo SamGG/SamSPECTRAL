@@ -90,10 +90,9 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		plot(eigen.space$values[1:eigenvalues.num]) 
 
 	############################################# K_MEANS ##########################################################
-	if(talk) message("Runing kmeans...")
-	# Each element contains the labels for that number of clusters.
 	try(rm(.Random.seed),silent=TRUE)	# To remove the random seed which might be loaded from previouse workspace.	
-	labels.for_num.of.clusters <- list()		
+	labels.for_num.of.clusters <- list()
+	# Each element contains the labels for that number of clusters.		
 	
 	############################ Estimating the number of clusters based on the "knee spot" ########################
 	if(is.na(number.of.clusters)){ # It needs to be determined "Automatically".
@@ -113,7 +112,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		while (eigen.space$values[last.value] - (a*last.value +b ) < 0 )	#We have not reached the line yet.
 			last.value <- last.value +1
 		number.of.clusters <- last.value+1										# This is the first value in right of the regesion line.
-	
+			
 		# way(2); We have: a * x_1 + b = 1 =>  x_1 = (1-b)/a, so:
 		#number.of.clusters <- round((1-b)/a); if(talk) message("way(2), after regresion")
 		if(talk) message("number.of.clusters is artificially forced to be >= 15")
@@ -124,17 +123,27 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 
 
 	for (i.number.of.clusters in 1: length(number.of.clusters)){	# For all different number of clusters,
-		centers <- number.of.clusters[i.number.of.clusters]
-    		xi <- eigen.space$vectors[,1:centers]
-    		yi <- xi/sqrt(rowSums(xi^2))
-    		res <- kmeans(yi, centers, iterations)
-  
-		# Returning the output for this number of clusters
-	  	cent <- matrix(unlist(lapply(1:centers,ll<- function(l){colMeans(x[which(res$cluster==l),])})),ncol=dim(x)[2], byrow=TRUE)
-	  	withss <- unlist(lapply(1:centers,ll<- function(l){sum((x[which(res$cluster==l),] - cent[l,])^2)}))
-	  	names(res$cluster) <- rown
 
-	
+		centers <- number.of.clusters[i.number.of.clusters]	
+  
+		try_kmeans <- "start"	# so that the folowing loop will start.
+		while ( !is.null(try_kmeans)  & centers<n ){	# The output of try() will be NULL or "try_error".
+			try_kmeans <- try(silent=TRUE, {
+				if(talk) message("Runing kmeans...")
+	    		xi <- eigen.space$vectors[,1:centers]
+    			yi <- xi/sqrt(rowSums(xi^2))
+    			res <- kmeans(yi, centers, iterations)
+			# Returning the output for this number of clusters
+			  	cent <- matrix(unlist(lapply(1:centers,ll<- function(l){colMeans(x[which(res$cluster==l),])})),ncol=dim(x)[2], byrow=TRUE)
+			  	withss <- unlist(lapply(1:centers,ll<- function(l){sum((x[which(res$cluster==l),] - cent[l,])^2)}))
+			  	names(res$cluster) <- rown
+			})#End try.
+			if (is(try_kmeans,"try-error")){
+				centers <- centers + 1
+				if(talk) message("centers was increased to: ",centers)				
+			}#End if (try_kmeans=="try-error").
+		}#End while ( (try_kmeans=="start" | try_kmeans=="try-error" ) & centers<n ).
+		number.of.clusters[i.number.of.clusters] <- centers	# This may be changed in above.
 		################################### End of spectral ####################################
 
 
@@ -146,6 +155,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		community.labels <- c()
 		num.of.added.isolated.communities <- 0
 		for (i in 1:n){
+			# if (i/100000==floor(i/100000)) print(i)	# Debuging for large n.
 			if (num.of.added.isolated.communities < length(isolated.community.indices)){		# there are more isolated communies to be added.
 				if (isolated.community.indices[num.of.added.isolated.communities+1] != i)	# i.e. the community i, has not been isolated,
 					community.labels[i] <- sc[i-num.of.added.isolated.communities]		# To see that this is true, 

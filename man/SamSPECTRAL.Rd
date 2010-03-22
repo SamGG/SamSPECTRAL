@@ -11,8 +11,8 @@
 }
 
 \usage{
-SamSPECTRAL(data.points, dimensions=colnames(data.points), normal.sigma = 500, separation.factor = 0.8,number.of.clusters = NA, 
-	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE)
+SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma = 500, separation.factor = 0.8,number.of.clusters = NA, 
+	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, scale=rep(1,dim(data.points)[2]))
 }
 
 \arguments{
@@ -30,7 +30,7 @@ SamSPECTRAL(data.points, dimensions=colnames(data.points), normal.sigma = 500, s
     This threshold controls to what extend clusters should be combined or kept separate.}
 
   \item{number.of.clusters}{
-    The default value is NA which leads to computating the number of spectral clusters automatically, otherwise this number will
+    The default value is NA which leads to computing the number of spectral clusters automatically, otherwise this number will
 		determine the number of spectral clusters. }
 
   \item{talk}{
@@ -49,7 +49,18 @@ SamSPECTRAL(data.points, dimensions=colnames(data.points), normal.sigma = 500, s
   \item{do.sampling}{
     A boolean flag with default value TRUE. If set to FALSE, the sampling stage will be ignored by picking up all the data points.}
 
+  \item{beta}{
+    A parameter with default value 4 which must NOT be changed except for huge samples with more than 100,000 data points or for developmental purposes.
+ 	Setting beta to zero will reduce computational time by applying the following approximation to the conductance calculation step. 
+	For each two community, the conductance will be the conductance between their representatives times their sizes.}
+
+  \item{scale}{
+    A vector the length of which is equal to the number of dimensions. The coordinates in each dimension are multiplied by the corresponding 
+	scaling factor. So, the bigger this factor is for a dimension, SamSPECTRAL will consider that dimension to be "more significant" and consequently, 
+	that dimension will be more effective in clustering.}
+
 }
+
 
 \details{
 	Hints for setting \code{separation.factor} and \code{normal.sigma}: While \code{separation.factor}=0.7 is normally an appropriate value for many datasets, 

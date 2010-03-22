@@ -157,7 +157,7 @@ Building_Communities <- function(full, m, space.length, community.weakness.thres
 		if(talk) message(paste("^--------^ communities have been build up."))
 
 		### breaking the repeat loop.bbbbbbbbbbbbbbbbbbbb
-		if( ( (repres.num < m ) & (repres.num > m/2 ))  | repres.num >= n | !do.sampling)	break   			
+		if( ( (repres.num <= m*(1.1) ) & (repres.num > 0.95*(m/2) ))  | repres.num >= n | !do.sampling)	break   			
     		                                                    # We break this loop only if we make sure that enough number of communities
 																# have been built (repres.num > m/2).
 																# The condision (repres.num < m) is to make sure the number of communities is not so high.

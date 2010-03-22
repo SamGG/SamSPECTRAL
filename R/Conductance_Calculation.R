@@ -39,7 +39,7 @@
 
 
 
-Conductance_Calculation <- function(full, normal.sigma, space.length, society, precision, talk=TRUE)
+Conductance_Calculation <- function(full, normal.sigma, space.length, society, precision, talk=TRUE, beta=4)
 {
 	t1<-Sys.time()
 	if(talk) message(t1)
@@ -65,7 +65,7 @@ Conductance_Calculation <- function(full, normal.sigma, space.length, society, p
 	### Computing conductance between communites:
 	#dyn.load("src/SamSPECTRAL.so")  # C function, packaging
 	#conductance.matrix <-.Call("conductance_computation",society,full, sigma)
-	conductance.matrix <-.Call("conductance_computation",society,full, sigma, PACKAGE = "SamSPECTRAL") #package
+	conductance.matrix <-.Call("conductance_computation",society,full, sigma, beta, PACKAGE = "SamSPECTRAL") #package
 	conductance.matrix <- round.conductance.matrix <- round(conductance.matrix,precision)	# solving precision problem.
 	conductance <- list(conductance.matrix=conductance.matrix, sigma = sigma)
 

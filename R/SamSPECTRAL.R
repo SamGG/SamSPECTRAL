@@ -31,8 +31,9 @@ function(lib, pkg)
 
 ### MAIN function ###
 	################################################################ S T A R T ########################################################################
-SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.sigma=500, separation.factor=0.8, number.of.clusters=NA, 
-						talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, do.sampling=TRUE){ 
+SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.sigma=500, separation.factor=0.8, number.of.clusters=NA, 
+						talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, 
+						scale=rep(1,dim(data.points)[2])){ 
 
 	if( class(data.points)!="matrix" ){  #Check if there are enough number of points, stored in the data.matrix.
 	    if(talk) message("BAD input for SamSPECTRAL!, maybe not a matrix.")
@@ -71,7 +72,7 @@ SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.s
 			ith.column <- data.matrix[,i.column]
 			ith.column.length <- max(ith.column) - min(ith.column)
 			if( ith.column.length!=0) 
-				full[,i.column] <- ith.column /ith.column.length   # This is the scaled column.
+				full[,i.column] <- (ith.column /ith.column.length) * scale[i.column]   # This is the scaled column.
 		}#End for (i.column.
 	# Therefor, 	
 		space.length <- 1
@@ -82,17 +83,17 @@ SamSPECTRAL <- function (data.points, dimensions=colnames(data.points), normal.s
     
     # Compute conductance between communities
 	if(talk) message("Conductance computation...")
-    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision, talk=talk)
+    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision, talk=talk, beta=beta)
     
     # Use spectral clustering to cluster the data
     clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance, 
 					number.of.clusters=number.of.clusters, talk=talk, eigenvalues.num = eigenvalues.num)
     
     number.of.clusters <- clust_result@number.of.clusters
-    labels.for_nom.of.clusters <- clust_result@labels.for_num.of.clusters
+    labels.for_num.of.clusters <- clust_result@labels.for_num.of.clusters
     
     # Connect components
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_nom.of.clusters, separation.factor, talk=talk)
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor, talk=talk)
 
 	### plot components
     #source("plot.components.R")

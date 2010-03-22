@@ -28,7 +28,7 @@ Then the function SamSPECTRAL() can be applied to all samples in the data set to
 }
 
 \author{
-Parisa Shooshtari and Habil Zare
+Habil Zare and Parisa Shooshtari 
 
 Maintainer: Habil Zare <hzare@bccrc.ca>
 }
