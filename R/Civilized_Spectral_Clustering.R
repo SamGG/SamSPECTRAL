@@ -90,7 +90,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		plot(eigen.space$values[1:eigenvalues.num]) 
 
 	############################################# K_MEANS ##########################################################
-	try(rm(.Random.seed),silent=TRUE)	# To remove the random seed which might be loaded from previouse workspace.	
+	try({.Random.seed <- "nothing"; rm(.Random.seed)},silent=TRUE)	# To remove the random seed which might be loaded from previouse workspace.	
 	labels.for_num.of.clusters <- list()
 	# Each element contains the labels for that number of clusters.		
 	
