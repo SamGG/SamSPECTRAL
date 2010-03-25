@@ -126,8 +126,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 
 		centers <- number.of.clusters[i.number.of.clusters]	
   
-		try_kmeans <- "start"	# so that the folowing loop will start.
-		while ( !is.null(try_kmeans)  & centers<n ){	# The output of try() will be NULL or "try_error".
+		while (centers<n ){	# We will continue this until the output of kmeans is not "try_error".
 			try_kmeans <- try(silent=TRUE, {
 				if(talk) message("Runing kmeans...")
 	    		xi <- eigen.space$vectors[,1:centers]
@@ -141,7 +140,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 			if (is(try_kmeans,"try-error")){
 				centers <- centers + 1
 				if(talk) message("centers was increased to: ",centers)				
-			}#End if (try_kmeans=="try-error").
+			} else break #End if (try_kmeans=="try-error").
 		}#End while ( (try_kmeans=="start" | try_kmeans=="try-error" ) & centers<n ).
 		number.of.clusters[i.number.of.clusters] <- centers	# This may be changed in above.
 		################################### End of spectral ####################################
