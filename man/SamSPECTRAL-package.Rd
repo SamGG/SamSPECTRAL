@@ -34,7 +34,7 @@ Maintainer: Habil Zare <hzare@bccrc.ca>
 }
 
 \references{
-Shooshtari, P. and Zare, H. and Gupta, A. and Brinkman R.B. (2009). Faithful Sampling for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. 
+Shooshtari, P. and Zare, H. and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. 
 }
 
 
