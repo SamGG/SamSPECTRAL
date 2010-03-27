@@ -53,7 +53,8 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
     # Read data files and transform them using log transform
 	#Data <- FSC.file@exprs    
 	#data.mtrix	<- log10(Data[,dimensions])
-	data.matrix	<- data.points[,dimensions]
+	data.matrix	<- as.matrix(data.points[,dimensions])	
+		# If dim of the above matrix is n*1, then R will do stupid trasformation from matrix to vector.
 
 	# Start reporting:
     t.SamSPECTRAL<-Sys.time()
