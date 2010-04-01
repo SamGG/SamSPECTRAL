@@ -117,7 +117,9 @@ To perform faithful sampling, we run:
 
 
 
-We intend to first find an appropriate value for $\sigma$ and then set separation factor. We start with normal.sigma=10:
+We intend to first find an appropriate value for $\sigma$ and then set separation factor. 
+Note that normal.sigma=$\frac{1}{\sigma^2}$, therefore, decreasing normal.sigma is equivalent to increasing $\sigma$ and visa versa.
+We start with normal.sigma=10:
 <<f_small,fig=TRUE, echo=true,results=verbatim>>=	
 	normal.sigma <- 10
     # Compute conductance between communities

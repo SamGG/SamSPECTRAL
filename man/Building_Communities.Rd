@@ -11,7 +11,7 @@
 }
 
 \usage{
-Building_Communities(full, m, space.length, community.weakness.threshold, talk=TRUE, do.sampling=TRUE)
+Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=1, talk=TRUE, do.sampling=TRUE)
 }
 
 \arguments{
