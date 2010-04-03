@@ -73,7 +73,7 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
 			ith.column <- data.matrix[,i.column]
 			ith.column.length <- max(ith.column) - min(ith.column)
 			if( ith.column.length!=0) 
-				full[,i.column] <- (ith.column /ith.column.length) * scale[i.column]   # This is the scaled column.
+				full[,i.column] <- ((ith.column - min(ith.column) )/ith.column.length) * scale[i.column]   # This is the scaled column.
 		}#End for (i.column.
 	# Therefor, 	
 		space.length <- 1
