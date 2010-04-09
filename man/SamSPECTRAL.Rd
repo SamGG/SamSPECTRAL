@@ -11,7 +11,7 @@
 }
 
 \usage{
-SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma = 500, separation.factor = 0.8,number.of.clusters = NA, 
+SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor,number.of.clusters = NA, 
 	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, scale=rep(1,dim(data.points)[2]))
 }
 
@@ -24,10 +24,10 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma = 500, s
 
   \item{normal.sigma}{
 	A scaling parameter that determines the "resolution" in the spectral clustering stage. By increasing it, more spectral clusters are identified.
-	This can be usefull when "small" population are aimed.} 
+	This can be useful when "small" population are aimed. See the user manual for a suggestion on how to set this parameter using the eigenvalue curve.} 
 
   \item{separation.factor}{
-    This threshold controls to what extend clusters should be combined or kept separate.}
+    This threshold controls to what extend clusters should be combined or kept separate.Normally, an appropriate value will fall in range 0.3-2.}
 
   \item{number.of.clusters}{
     The default value is NA which leads to computing the number of spectral clusters automatically, otherwise this number will

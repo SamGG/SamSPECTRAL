@@ -172,7 +172,7 @@ Now having sigma been adjusted, separation factor can be tuned:
     plot(full, pch='.', col= component.of)
 @
 
-This value is too small and a population is combined by mistake. Therefore, we increase septation factor to separate the components more:
+This value is too small for the seperation factor and a population is combined by mistake. Therefore, we increase septation factor to separate the components more:
 <<f_sep2,fig=TRUE, echo=true,results=verbatim>>=	
 	# Setting septation factor:
 	separation.factor <- 0.5

@@ -22,7 +22,7 @@ setClass("ClusteringResult",
 #####################################################################################################################################################
 Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, society, conductance, iterations=200,number.of.clusters=NA, 
 									eigenvalues.num = NA, talk=TRUE)
-{
+{ 
 
 	t1<-Sys.time()
 	if(talk) message(t1)

@@ -5,7 +5,7 @@
 # Call libraries
 # library(flowCore)
 
-# Call functions
+# Call functions:
 .First.lib <-
 function(lib, pkg)
 {
@@ -31,12 +31,12 @@ function(lib, pkg)
 
 ### MAIN function ###
 	################################################################ S T A R T ########################################################################
-SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.sigma=500, separation.factor=0.8, number.of.clusters=NA, 
+SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor, number.of.clusters=NA, 
 						talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, 
 						scale=rep(1,dim(data.points)[2])){ 
 
 	if( class(data.points)!="matrix" ){  #Check if there are enough number of points, stored in the data.matrix.
-	    if(talk) message("BAD input for SamSPECTRAL!, maybe not a matrix.")
+	    if(talk) message("BAD input for SamSPECTRAL!, maybe it is not a matrix.")
 		return(NULL)
 	}# else, the input is good.    
 
