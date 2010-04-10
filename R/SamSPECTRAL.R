@@ -42,7 +42,6 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
 
 	# Setting internal parameters: (These are rarely needed to be changed.)
 		community.weakness.threshold <- 1     			# All communities with population less than this, will be omitted.
-		determine.number.of.clusters <- "Automatically"
 		maximum.number.of.clusters <- 30			
 		# We use this parameter to find the "knee spot" and then estimate the bumber of clusters for the spectral clustering algorithm.
 		m <- 3000				# upper bound on the number of clusters (almost)
