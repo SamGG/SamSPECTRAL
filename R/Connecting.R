@@ -75,17 +75,17 @@ Connecting <- function(full, society, conductance, number.of.clusters, labels.fo
 	
 	concat.two.sided <- function(input.graph.matrix){
 
-	# input check
-	if(class(input.graph.matrix) != "matrix"){ 	
-		result <- list (input.graph.matrix, components.list)
-		return(result)	
-	}
-	output.graph.matrix <- input.graph.matrix
-	within.connection <- diag(output.graph.matrix)
+		# input check
+		if(class(input.graph.matrix) != "matrix"){ 	
+			result <- list (input.graph.matrix, components.list)
+			return(result)	
+		}
+		output.graph.matrix <- input.graph.matrix
+		within.connection <- diag(output.graph.matrix)
 
 
-	# In the following lines, we will substitue the zero entries with a small value to avoid deviding by zero or producing NaN.
-		absolutly.poor.clusters.index	<- which(within.connection==0)						# The clusters with zero within connection. 
+		# In the following lines, we will substitue the zero entries with a small value to avoid deviding by zero or producing NaN.
+			absolutly.poor.clusters.index	<- which(within.connection==0)						# The clusters with zero within connection. 
 		
 		minumum.positive.connection <-  min(output.graph.matrix[output.graph.matrix!=0])
 			# This is the smallest positive connection in the whole graph. 			
@@ -95,32 +95,32 @@ Connecting <- function(full, society, conductance, number.of.clusters, labels.fo
 			# still would like to connect the two nodes.			
 																										
 		within.connection[absolutly.poor.clusters.index] <- substitute.small.value			# Replacing the zeros with the small value.
-	#End of substituting.
+		#End of substituting.
 
 
-	normlizer.matrix.for_connection <- diag(1/within.connection)
-	normalized.output.graph.matrix <- output.graph.matrix %*% normlizer.matrix.for_connection	
-	last.row <-input.graph.matrix[dim(input.graph.matrix)[1],]			
-	for (i in 1:dim(output.graph.matrix)[2] ){	
-		for (j in 1:dim(output.graph.matrix)[2] ){
-			if ( (normalized.output.graph.matrix[i,j] >=1)  && (normalized.output.graph.matrix[j,i] >=1) && (i!=j) ) {	
-				the.two.components <- c(last.row[i], last.row[j])
-				host <- max(the.two.components) 				
-				guest <- min(the.two.components) 				
-				components.list[[host]] <- union( components.list[[host]], components.list[[guest]])
-				components.list[[guest]] <- "vanished"
-				output.graph.matrix[j,] <- pmax(output.graph.matrix[j,] , output.graph.matrix[i,])			
-				output.graph.matrix[,j] <- pmax(output.graph.matrix[,j] , output.graph.matrix[,i])			
-				output.graph.matrix <- output.graph.matrix[-i,]								
-				output.graph.matrix <- output.graph.matrix[,-i]								
-				result <- list (output.graph.matrix, components.list)
-				return(result)
+		normlizer.matrix.for_connection <- diag(1/within.connection)
+		normalized.output.graph.matrix <- output.graph.matrix %*% normlizer.matrix.for_connection	
+		last.row <-input.graph.matrix[dim(input.graph.matrix)[1],]			
+		for (i in 1:dim(output.graph.matrix)[2] ){	
+			for (j in 1:dim(output.graph.matrix)[2] ){
+				if ( (normalized.output.graph.matrix[i,j] >=1)  && (normalized.output.graph.matrix[j,i] >=1) && (i!=j) ) {	
+					the.two.components <- c(last.row[i], last.row[j])
+					host <- max(the.two.components) 				
+					guest <- min(the.two.components) 				
+					components.list[[host]] <- union( components.list[[host]], components.list[[guest]])
+					components.list[[guest]] <- "vanished"
+					output.graph.matrix[j,] <- pmax(output.graph.matrix[j,] , output.graph.matrix[i,])			
+					output.graph.matrix[,j] <- pmax(output.graph.matrix[,j] , output.graph.matrix[,i])			
+					output.graph.matrix <- output.graph.matrix[-i,]								
+					output.graph.matrix <- output.graph.matrix[,-i]								
+					result <- list (output.graph.matrix, components.list)
+					return(result)
+				}
 			}
 		}
+		result <- list (output.graph.matrix, components.list)
+		return(result)
 	}
-	result <- list (output.graph.matrix, components.list)
-	return(result)
-}
 
 
 	
@@ -219,7 +219,7 @@ Connecting <- function(full, society, conductance, number.of.clusters, labels.fo
 
 	# points in the components
 	components.points <-list()					
-	component.of<-c()							
+	component.of <- rep(NA, times=dim(full)[1] )							
 	number.of.points.in_component <-c()			
 
 	for (i in 1:length(components)){			

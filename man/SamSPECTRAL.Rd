@@ -11,8 +11,8 @@
 }
 
 \usage{
-SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor,number.of.clusters = NA, 
-	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, scale=rep(1,dim(data.points)[2]))
+SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor,number.of.clusters = NA, scale=rep(1,dim(data.points)[2]),
+	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=1000)
 }
 
 \arguments{
@@ -58,6 +58,9 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
     A vector the length of which is equal to the number of dimensions. The coordinates in each dimension are multiplied by the corresponding 
 	scaling factor. So, the bigger this factor is for a dimension, SamSPECTRAL will consider that dimension to be "more significant" and consequently, 
 	that dimension will be more effective in clustering.}
+	
+  \item{stabilizer}{
+    The larger this integer is, the final results will be more stable because the underlying kmeans will restart many more times.}
 
 }
 
@@ -97,6 +100,7 @@ Habil Zare and Parisa Shooshtari}
     L <- SamSPECTRAL(data.points=full,dimensions=c(1,2,3), normal.sigma = 200, separation.factor = 0.39)
     
     plot(full, pch='.', col= L)
+    
 }
 
 \keyword{cluster}

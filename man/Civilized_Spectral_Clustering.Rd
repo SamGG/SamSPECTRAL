@@ -11,7 +11,8 @@
 }
 
 \usage{
-Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,iterations=200, number.of.clusters=NA,  eigenvalues.num =NA, talk=TRUE)
+Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,iterations=200, number.of.clusters=NA,  
+								eigenvalues.num =NA, talk=TRUE,stabilizer=1000)
 }
 
 \arguments{
@@ -39,6 +40,9 @@ Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conduct
 
   \item{eigenvalues.num}{
         An integer with default value NA which prevents ploting the curve of eigenvalues. Otherwise, they will be ploted upto this number.}
+
+  \item{stabilizer}{
+    The larger this integer is, the final results will be more stable because the underlying kmeans will restart many more times.}        
   
 }
 

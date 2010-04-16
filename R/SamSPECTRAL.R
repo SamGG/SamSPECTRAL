@@ -32,8 +32,8 @@ function(lib, pkg)
 ### MAIN function ###
 	################################################################ S T A R T ########################################################################
 SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor, number.of.clusters=NA, 
-						talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, 
-						scale=rep(1,dim(data.points)[2])){ 
+						scale=rep(1,dim(data.points)[2]),talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, 
+						do.sampling=TRUE, beta=4,stabilizer=1000){ 
 
 	if( class(data.points)!="matrix" ){  #Check if there are enough number of points, stored in the data.matrix.
 	    if(talk) message("BAD input for SamSPECTRAL!, maybe it is not a matrix.")
@@ -87,7 +87,7 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
     
     # Use spectral clustering to cluster the data
     clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance, 
-					number.of.clusters=number.of.clusters, talk=talk, eigenvalues.num = eigenvalues.num)
+					number.of.clusters=number.of.clusters, talk=talk, eigenvalues.num = eigenvalues.num, stabilizer=stabilizer)
     
     number.of.clusters <- clust_result@number.of.clusters
     labels.for_num.of.clusters <- clust_result@labels.for_num.of.clusters
@@ -95,8 +95,6 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
     # Connect components
     component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor, talk=talk)
 
-	### plot components
-    #source("plot.components.R")
 
 	################################################################# E N D ########################################################################
 	if(talk) message("Total time:"); if(talk) message(Sys.time()-t.SamSPECTRAL)

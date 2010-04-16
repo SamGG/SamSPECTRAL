@@ -21,7 +21,7 @@ setClass("ClusteringResult",
 # The function:
 #####################################################################################################################################################
 Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, society, conductance, iterations=200,number.of.clusters=NA, 
-									eigenvalues.num = NA, talk=TRUE)
+									eigenvalues.num = NA, talk=TRUE, stabilizer=1000)
 { 
 
 	t1<-Sys.time()
@@ -87,10 +87,11 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 	#save(eigen.space, file=paste("clusters/eigenspace_sigma", sigma,".Reg", sep=""))
 	#Showing eigen values:
 	if (!is.na(eigenvalues.num))
-		plot(eigen.space$values[1:eigenvalues.num]) 
+		plot(eigen.space$values[1:eigenvalues.num], main=paste("normal.sigma= ",sigma) ) 
 
 	############################################# K_MEANS ##########################################################
-	try({.Random.seed <- "nothing"; rm(.Random.seed)},silent=TRUE)	# To remove the random seed which might be loaded from previouse workspace.	
+	#try({sample(1:100,10); rm(.Random.seed,inherits=TRUE)},silent=TRUE)	
+		# To remove the random seed which might be loaded from previouse workspace.	
 	labels.for_num.of.clusters <- list()
 	# Each element contains the labels for that number of clusters.		
 	
@@ -131,7 +132,7 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 				if(talk) message("Runing kmeans...")
 	    		xi <- eigen.space$vectors[,1:centers]
     			yi <- xi/sqrt(rowSums(xi^2))
-    			res <- kmeans(yi, centers, iterations)
+    			res <- kmeans(yi, centers, iterations, nstart=stabilizer)
 			# Returning the output for this number of clusters
 			  	cent <- matrix(unlist(lapply(1:centers,ll<- function(l){colMeans(x[which(res$cluster==l),])})),ncol=dim(x)[2], byrow=TRUE)
 			  	withss <- unlist(lapply(1:centers,ll<- function(l){sum((x[which(res$cluster==l),] - cent[l,])^2)}))
@@ -154,7 +155,6 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		community.labels <- c()
 		num.of.added.isolated.communities <- 0
 		for (i in 1:n){
-			# if (i/100000==floor(i/100000)) print(i)	# Debuging for large n.
 			if (num.of.added.isolated.communities < length(isolated.community.indices)){		# there are more isolated communies to be added.
 				if (isolated.community.indices[num.of.added.isolated.communities+1] != i)	# i.e. the community i, has not been isolated,
 					community.labels[i] <- sc[i-num.of.added.isolated.communities]		# To see that this is true, 
