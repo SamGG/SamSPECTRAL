@@ -72,7 +72,7 @@ This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is 
 
 \section{Adjusting parameters}
 
-For efficiency, one can set $m=3000$ to keep the running time bellow 1 minute by a 2 GHz processor and normally the obtain results remained satisfactory for flow cytometry data. The separation factor and scaling parameter ($\sigma$) are two main parameters that needed to be adjusted.
+For efficiency, one can set $m=3000$ to keep the running time bellow 1 minute by a 2 GHz processor and normally the results remained satisfactory for flow cytometry data. The separation factor and scaling parameter ($\sigma$) are two main parameters that needed to be adjusted.
 The general way is to run SamSPECTRAL on one or two random data samples of a flow cytometry data set and try different values for $\sigma$ and separation factor. Then, the selected parameters were fixed and used to apply SamSPECTRAL on the rest of data samples. An efficient strategy is explained by the following example.
 
 
@@ -125,7 +125,7 @@ We start with normal.sigma=10:
     # Compute conductance between communities
     conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
     # Compute the eigenspace:
-    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance)    
+    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
 	eigen.values <- clust_result@eigen.space$values
  	plot(eigen.values[1:50])
 @
@@ -139,7 +139,7 @@ We observe that the eigen values curve does not have a "knee" shape. So we incre
     # Compute conductance between communities
     conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
     # Compute the eigenspace:
-    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance)    
+    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
 	eigen.values <- clust_result@eigen.space$values
  	plot(eigen.values[1:50])
 @
@@ -151,7 +151,7 @@ We observe that in the eigen values plot, "too many" values are close to 1 but f
     # Compute conductance between communities
     conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
     # Compute the eigenspace:
-    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance)    
+    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
 	eigen.values <- clust_result@eigen.space$values
  	plot(eigen.values[1:50])
 @

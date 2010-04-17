@@ -167,7 +167,7 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 		k<- (m/repres.num)^(1/dimention)
 		
 		if (nbhood < epsilon) break                             # If this happens, then we will not get more communities by decreasing nbhood!
-		#if (nbhood < nbhood / k) break                        # This happens when nbhood is not reduced by dividing by k!
+		#if (nbhood < nbhood / k) break                         # This happens when nbhood is not reduced by dividing by k!
 	
     		                                                    # These situation may happen if many points have the same coordinates,
     		                                                    # then nbhood will converge to the persision level of the machine (10^(-324))
