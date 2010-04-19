@@ -11,7 +11,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{amsmath}
-\usepackage{hyperref}
+\usepackage{cite, hyperref}
 
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -22,6 +22,9 @@
 \begin{document}
 \title{SamSPECTRAL: A modified spectral clustering method for clustering Flow Cytometry Data}
 \maketitle{}
+
+\tableofcontents
+\newpage
 
 \section{Introduction} 
 Data analysis is a crucial step in most of recent biological research areas such as microarray techniques, gene expression and protein classification. A classical approach for analysing biological data is to first group individual data points based on some similarity criterion,
@@ -46,7 +49,21 @@ However, because of the machine limitations, one faces serious empirical barrier
 
 
 \section{How to run SamSPECTRAL?}
-The main function of this package is SamSPECTRAL. By loading it using the command library(SamSPECTRAL) in R, some parameters are also set including: dimensions, space.length, normal.sigma, separation.factor, maximum.number.of.clusters. These parameters should be adjusted for each data set by running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in the data set to identify cell populations in each sample data.
+SamSPECTRAL is an R package source that can be downloaded from BioCunductor. In Linux, it can be installed by the following command:
+\newline
+\newline
+\texttt{R CMD INSTALL SamSPECTRAL\_x.y.z.tar.gz}
+\newline
+\newline
+where x.y.z. determines the version. For installing on other operating systems, look at R documentations.
+
+The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. Before running this function on a data set, some parameters are required to be set including: normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
+
+
+
+
+The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. Before running this function on a data set, some parameters are required to be set including: normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
+
 
 
 
