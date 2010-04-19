@@ -17,10 +17,10 @@
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
 
-\author{Parisa Shooshtari and Habil zare}
+\author{Habil Zare and Parisa Shooshtari }
 
 \begin{document}
-\title{SamSPECTRAL: A modified spectral clustering method for clustering Flow Cytometry Data}
+\title{SamSPECTRAL: A Modified Spectral Clustering Method for Clustering Flow Cytometry Data}
 \maketitle{}
 
 \tableofcontents
@@ -51,11 +51,11 @@ However, because of the machine limitations, one faces serious empirical barrier
 \section{How to run SamSPECTRAL?}
 SamSPECTRAL is an R package source that can be downloaded from BioCunductor. In Linux, it can be installed by the following command:
 \newline
-\newline
+$\\$
 \texttt{R CMD INSTALL SamSPECTRAL\_x.y.z.tar.gz}
 \newline
-\newline
-where x.y.z. determines the version. For installing on other operating systems, look at R documentations.
+$\\$
+where x.y.z. determines the version.
 
 The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. Before running this function on a data set, some parameters are required to be set including: normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
 
