@@ -101,7 +101,7 @@ The following piece of code, scales the coordinates in range [0,1]:
 <<ReadFiles2, echo=true,results=verbatim>>=	
 	for (i.column in 1:dim(full)[2]){#For all columns
 		ith.column <- full[,i.column]
-		full[,i.column] <- ith.column /(max(ith.column) - min(ith.column) )  # This is the scaled column.
+		full[,i.column] <- (ith.column-min(ith.column)) /(max(ith.column) - min(ith.column) )  # This is the scaled column.
 	}#End for (i.column.
 	# Therefore, 	
 	space.length <- 1

@@ -91,16 +91,17 @@ Habil Zare and Parisa Shooshtari}
 
 \examples{
 
-    library(SamSPECTRAL)
-
-   # Reading data file which has been transformed using log transform
-    data(small_data)
-	full <- small
+	\dontrun{
+ 	   library(SamSPECTRAL)
 	
-    L <- SamSPECTRAL(data.points=full,dimensions=c(1,2,3), normal.sigma = 200, separation.factor = 0.39)
-    
-    plot(full, pch='.', col= L)
-    
+ 	  # Reading data file which has been transformed using log transform
+ 	   data(small_data)
+		full <- small
+		
+ 	   L <- SamSPECTRAL(data.points=full,dimensions=c(1,2,3), normal.sigma = 200, separation.factor = 0.39)
+ 	   
+ 	   plot(full, pch='.', col= L)
+	}    
 }
 
 \keyword{cluster}
