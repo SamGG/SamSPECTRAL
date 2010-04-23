@@ -103,6 +103,14 @@ The general way is to run SamSPECTRAL on one or two random data samples of a flo
 	full <- small
 @
 
+	The objects needed for creating this vignette can be directly computed or loaded from previously saved workspace to save time.
+	The later increases the speed of building this vignette.
+	
+<<ReadFiles2, echo=true,results=verbatim>>=
+	run.live <- FALSE
+@
+
+
 
 The following parameters are rarely needed to be changed for flow cytometry data:
 
@@ -124,7 +132,7 @@ The following piece of code, scales the coordinates in range [0,1]:
 	space.length <- 1
 @
 
-To perform faithful sampling, we run:
+To perform faithful sampling, we run -------------------------------------------------:
 <<f_sampling,fig=TRUE, echo=true,results=verbatim>>=	
 	# Sample the data and build the communities 
     society <- Building_Communities(full,m, space.length, community.weakness.threshold)
@@ -142,9 +150,12 @@ We start with normal.sigma=10:
     # Compute conductance between communities
     conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
     # Compute the eigenspace:
-    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
-	eigen.values <- clust_result@eigen.space$values
- 	plot(eigen.values[1:50])
+    if (run.live){
+	    clust_result.10 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+		eigen.values.10 <- clust_result.10@eigen.space$values
+	} else 
+		data("eigen.values.10")		
+ 	plot(eigen.values.10[1:50])
 @
 
 
@@ -156,9 +167,12 @@ We observe that the eigen values curve does not have a "knee" shape. So we incre
     # Compute conductance between communities
     conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
     # Compute the eigenspace:
-    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
-	eigen.values <- clust_result@eigen.space$values
- 	plot(eigen.values[1:50])
+    if (run.live){
+	    clust_result.1000 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+		eigen.values.1000 <- clust_result.1000@eigen.space$values
+	} else 
+		data("eigen.values.1000")		
+ 	plot(eigen.values.1000[1:50])
 @
 
 
@@ -168,9 +182,9 @@ We observe that in the eigen values plot, "too many" values are close to 1 but f
     # Compute conductance between communities
     conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
     # Compute the eigenspace:
-    clust_result <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
-	eigen.values <- clust_result@eigen.space$values
- 	plot(eigen.values[1:50])
+    clust_result.250 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+	eigen.values.250 <- clust_result.250@eigen.space$values
+ 	plot(eigen.values.250[1:50])
 @
 
 This is "a right" value for normal.sigma because the curve has now a knee shape. Even some variation to this parameter does not change the shape significantly (200 or 300 can be tried). 
@@ -178,8 +192,8 @@ This is "a right" value for normal.sigma because the curve has now a knee shape.
 Now having sigma been adjusted, separation factor can be tuned:
 <<f_sep1,fig=TRUE, echo=true,results=verbatim>>=	
 	# Extracting labels:
-    labels.for_num.of.clusters <- clust_result@labels.for_num.of.clusters
-	number.of.clusters <- clust_result@number.of.clusters
+    labels.for_num.of.clusters <- clust_result.250@labels.for_num.of.clusters
+	number.of.clusters <- clust_result.250@number.of.clusters
     L33 <- labels.for_num.of.clusters[[number.of.clusters]]
 	# Setting septation factor:
 	separation.factor <- 0.1
@@ -189,7 +203,7 @@ Now having sigma been adjusted, separation factor can be tuned:
     plot(full, pch='.', col= component.of)
 @
 
-This value is too small for the seperation factor and a population is combined by mistake. Therefore, we increase septation factor to separate the components more:
+This value is too small for the separation factor and a population is combined by mistake. Therefore, we increase septation factor to separate the components more:
 <<f_sep2,fig=TRUE, echo=true,results=verbatim>>=	
 	# Setting septation factor:
 	separation.factor <- 0.5

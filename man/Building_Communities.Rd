@@ -38,7 +38,7 @@ Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=
     Returns a society which is a list of communities.}
 
 \references{
-Faithful Sampling for Spectral Clustering to Analyse High Throughput Biological Data.}
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. }
 
 \author{
 Parisa Shooshtari and Habil Zare 
