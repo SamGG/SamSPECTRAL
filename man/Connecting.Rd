@@ -47,7 +47,8 @@ Connecting(full, society,conductance, number.of.clusters, labels.for_num.of.clus
 }
 
 \references{
-Faithful Sampling for Spectral Clustering to Analyse High Throughput Biological Data.}
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. }
+
 
 \author{
 Parisa Shooshtari and Habil Zare 

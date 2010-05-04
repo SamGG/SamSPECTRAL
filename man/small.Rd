@@ -11,7 +11,7 @@ This FCS file is a small one used to show how to set SamSPECTRAL parameters.}
 
 \usage{data(small_data)}
 \format{
-  The is an FCS file.}
+  This is an FCS file.}
 
 %\details{
 %%  ~~ If necessary, more details than the __description__ above ~~
@@ -21,7 +21,7 @@ This FCS file is a small one used to show how to set SamSPECTRAL parameters.}
 %}
 
 \references{
-Faithful Sampling for Spectral Clustering to Analyse High Throughput Biological Data.}
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. }
 
 
 \examples{

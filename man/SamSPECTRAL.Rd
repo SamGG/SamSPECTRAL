@@ -79,7 +79,8 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
 }
 
 \references{
-Faithful Sampling for Spectral Clustering to Analyse High Throughput Biological Data.}
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. }
+
 
 \author{
 Habil Zare and Parisa Shooshtari}
