@@ -74,12 +74,11 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 	        #square.distance <- .Call("maximum_of_rows",difference)			# This vector, contains the distance between the point and all other points.
 	        square.distance <- .Call("maximum_of_rows",difference, PACKAGE = "SamSPECTRAL")			
 	        close.points <- which(square.distance < h )
-        
-			# To compute epsilon which is almost the minimum distance between points in the data,
-				square.distance.without.THE.point <- square.distance[-point.ind]
-				if (min(square.distance.without.THE.point) != 0){ #We no not consider points with the same coordinates.
-    				epsilon <- min(union(epsilon,square.distance.without.THE.point))	
-		        }
+
+			# To compute epsilon which is almost the minimum distance between the points in the data,
+				min.index <- which(square.distance < epsilon & 0<square.distance)
+				epsilon <- min(c(epsilon, square.distance[min.index]) ) #We no not consider points with the same coordinates.
+				epsilon <- min(abs(square.distance-epsilon)) # We no not consider points with the same coordinates.
 	        result <- list(close.points= close.points, epsilon = epsilon)											
     	    return(result)
         }
@@ -203,6 +202,5 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 
 	########################### E N D ###########################
 	if(talk) message(Sys.time()-t1)
-	
-	society
+	return(society)
 }

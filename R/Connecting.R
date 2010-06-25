@@ -239,7 +239,8 @@ Connecting <- function(full, society, conductance, number.of.clusters, labels.fo
 
 	################################################################# E N D ########################################################################
 	
-    return(component.of)    	
+    return(list(label=component.of,clusters.graph=max.conductance))
+    	#clusters.graph is the graph of clusters before connnecting is done.
 }
 
 

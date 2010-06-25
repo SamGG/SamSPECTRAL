@@ -132,7 +132,7 @@ The following piece of code, scales the coordinates in range [0,1]:
 	space.length <- 1
 @
 
-To perform faithful sampling, we run -------------------------------------------------:
+To perform faithful sampling, we run:
 <<f_sampling,fig=TRUE, echo=true,results=verbatim>>=	
 	# Sample the data and build the communities 
     society <- Building_Communities(full,m, space.length, community.weakness.threshold)

@@ -93,7 +93,7 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
     labels.for_num.of.clusters <- clust_result@labels.for_num.of.clusters
     
     # Connect components
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor, talk=talk)
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor, talk=talk)$label
 
 
 	################################################################# E N D ########################################################################
