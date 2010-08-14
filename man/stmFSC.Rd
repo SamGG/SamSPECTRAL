@@ -21,8 +21,7 @@ This FCS file is used as demo data to illustrate SamSPECTRAL capabilities in ide
 %}
 
 \references{
-Faithful Sampling for Spectral Clustering to Analyse High Throughput Biological Data.}
-
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403. }
 
 \examples{
 data(stm)

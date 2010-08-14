@@ -38,7 +38,7 @@ Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=
     Returns a society which is a list of communities.}
 
 \references{
-Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. submitted to BMC Bioinformatics. }
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403.}
 
 \author{
 Parisa Shooshtari and Habil Zare 
