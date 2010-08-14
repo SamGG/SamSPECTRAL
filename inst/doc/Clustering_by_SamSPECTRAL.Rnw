@@ -198,7 +198,7 @@ Now having sigma been adjusted, separation factor can be tuned:
 	# Setting septation factor:
 	separation.factor <- 0.1
 	# post-processing:
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
 	# ploting:
     plot(full, pch='.', col= component.of)
 @
@@ -208,15 +208,18 @@ This value is too small for the separation factor and a population is combined b
 	# Setting septation factor:
 	separation.factor <- 0.5
 	# post-possesing:
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)
+    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
 	# ploting:
-    plot(full, pch='.', col= component.of)
+    plot(full, pch='.', col= component.of) 
 @
 
 This is the right value for separator factor as all population are now separated. 
 
 Now, we can fix these values for the parameters; normal.sigma=250 and separation.factor=0.5. One can run the SamSPECTRAL algorithm on the rest of the data set without changing them, hopefully, obtaining as appropriate results. 
 
+
+\section{Reference}
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: \textbf{Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data.} \textit{BMC Bioinformatics}, 2010, \textbf{11}:403.
 
 
 

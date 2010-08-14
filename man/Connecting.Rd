@@ -43,11 +43,16 @@ Connecting(full, society,conductance, number.of.clusters, labels.for_num.of.clus
 }
 
 \value{
-    Returns a vector containing the labels that determines to which component each data point belongs.
+    Returns two objects: 1) label, a vector containing the labels that determines to which component each data point belongs.
+     2) clusters.graph, the max.conductance  matrix that describes the graph based on clusters. 
+     
+         return(list(label=component.of,clusters.graph=max.conductance))
+     
 }
 
 \references{
-Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403. }
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403.}
+
 
 
 \author{

@@ -42,7 +42,8 @@ Conductance_Calculation(full, normal.sigma, space.length, society, precision, ta
     Returns a matrix in which each entry is the conductance between two communities.}
     
 \references{
-Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B. (2009). Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403.}
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403.}
+
 
 
 \author{
