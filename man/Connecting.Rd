@@ -44,10 +44,7 @@ Connecting(full, society,conductance, number.of.clusters, labels.for_num.of.clus
 
 \value{
     Returns two objects: 1) label, a vector containing the labels that determines to which component each data point belongs.
-     2) clusters.graph, the max.conductance  matrix that describes the graph based on clusters. 
-     
-         return(list(label=component.of,clusters.graph=max.conductance))
-     
+     2) clusters.graph, the max.conductance  matrix that describes the original graph based on clusters. 
 }
 
 \references{
