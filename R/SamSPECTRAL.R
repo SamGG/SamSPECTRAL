@@ -33,7 +33,7 @@ function(lib, pkg)
 	################################################################ S T A R T ########################################################################
 SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor, number.of.clusters=NA, 
 						scale=rep(1,dim(data.points)[2]),talk=TRUE, precision=6, eigenvalues.num=NA, return_only.labels=TRUE, 
-						do.sampling=TRUE, beta=4,stabilizer=500){ 
+						do.sampling=TRUE, beta=4,stabilizer=1000){ 
 
 	if( class(data.points)!="matrix" ){  #Check if there are enough number of points, stored in the data.matrix.
 	    if(talk) message("BAD input for SamSPECTRAL!, maybe it is not a matrix.")
