@@ -78,17 +78,24 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		d <- d[-isolated.community.indices]	
 		if(talk) message(paste( length(isolated.community.indices), " communities are considered as isolated outliers." ));
 	}		
-		
-    	l <- d * km %*% diag(d)
-		
-    	eigen.space <-eigen(l)
+	##
+	minimum.degree.sum <- min(1/d)
+	if(talk) message("Minimum degree (sum of edges): ", minimum.degree.sum)		
+   	l <- d * km %*% diag(d)
+	l <- (l + t(l))/2	# symetrizing might help to prevent complex numbers probably caused by round-off errors.
+	##
+	##
+	#*****************************************************
+   	eigen.space <-eigen(l)		# EIGEN SPACE COMPUTATION.
+	#*****************************************************
+	##
 	if(talk) message(Sys.time())
-	
-	#save(eigen.space, file=paste("clusters/eigenspace_sigma", sigma,".Reg", sep=""))
+	##	
+	##
 	#Showing eigen values:
 	if (!is.na(eigenvalues.num))
 		plot(eigen.space$values[1:eigenvalues.num], main=paste("normal.sigma= ",sigma) ) 
-
+	##
 	############################################# K_MEANS ##########################################################
 	#try({sample(1:100,10); rm(.Random.seed,inherits=TRUE)},silent=TRUE)	
 		# To remove the random seed which might be loaded from previouse workspace.	

@@ -1,7 +1,7 @@
 Package: SamSPECTRAL
 Type: Package
 Title: Identifies cell population in flow cytometry data.
-Version: 1.7.0
+Version: 1.7.3
 Date: 2009-09-05
 Author: Habil Zare and Parisa Shooshtari
 Maintainer: Habil Zare <hzare@bccrc.ca>
@@ -11,4 +11,4 @@ Description: Given a matrix of coordinates as input, SamSPECTRAL first builds th
 License: GPL version 2 or newer
 biocViews: Bioinformatics, FlowCytometry, CellBiology, Clustering, Cancer, FlowCytData, StemCells,  HIV
 LazyLoad: yes
-Packaged: 2010-07-06 09:55:01 UTC; biocbuild
+Packaged: 2011-04-14 17:24:55 UTC; biocbuild

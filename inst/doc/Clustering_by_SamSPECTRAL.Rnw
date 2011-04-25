@@ -61,13 +61,6 @@ The main function of this package is SamSPECTRAL() which is loaded by using the 
 
 
 
-
-The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. Before running this function on a data set, some parameters are required to be set including: normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
-
-
-
-
-
 \subsection{An example}
 
 This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is a flow frame (which is normally read from an FCS file using flowCore), then the object "small" in the following example should be replaced by expr($f$). 
@@ -75,7 +68,7 @@ This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is 
 
 
 \begin{center}
-<<f_example,fig=TRUE, echo=TRUE>>=
+<<f_example,fig=FALSE, echo=TRUE>>=
     library(SamSPECTRAL)
     data(small_data)
 	full <- small
@@ -84,6 +77,36 @@ This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is 
 	plot(full, pch='.', col= L)
 @
 \end{center}
+
+SamSPECTRAL is done. The results are in $L$, a vector that provides a numeric label for each event.
+All events with equal label are in one component and isolated outliers are labelled by $NA$.  
+The following piece of code is not a part of the analysis 
+and it is included only for more clear presentation of the results. 
+The code computes the frequency of events in each component and adds a legend to the figure.
+
+\begin{center}
+<<f_example,fig=TRUE, echo=TRUE>>=
+	# Computing the frequency:
+	plot(full, pch='.', col= L)
+	frequency <- c()	
+	minimum.frequency <- 0.01	
+		# components smaller than this threshould, will not be aprear in the legend statistics.
+	frequency.large <- c()	
+	labels <- as.character(unique(L))
+	for(label in labels){
+		if(!is.na(label)){
+			frequency[label] <- length(which(L==label))/length(L)
+			if(frequency[label] > minimum.frequency)
+				frequency.large[label] <- frequency[label]
+		}
+	}	
+	print(frequency)	
+
+	# Adding legend 
+	legend(x="topleft",as.character(round(frequency.large,3)),col=names(frequency.large),pch=19)
+@
+\end{center}
+
 
 
 
@@ -210,7 +233,7 @@ This value is too small for the separation factor and a population is combined b
 	# post-possesing:
     component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
 	# ploting:
-    plot(full, pch='.', col= component.of) 
+    plot(full, pch='.', col= component.of)
 @
 
 This is the right value for separator factor as all population are now separated. 
