@@ -11,4 +11,3 @@ Description: Given a matrix of coordinates as input, SamSPECTRAL first builds th
 License: GPL version 2 or newer
 biocViews: Bioinformatics, FlowCytometry, CellBiology, Clustering, Cancer, FlowCytData, StemCells,  HIV
 LazyLoad: yes
-Packaged: 2011-04-14 17:24:55 UTC; biocbuild
