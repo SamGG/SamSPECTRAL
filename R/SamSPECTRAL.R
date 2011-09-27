@@ -10,7 +10,6 @@
 function(lib, pkg)
 {
  library.dynam("SamSPECTRAL", package = pkg, lib.loc = lib)
- provide(SamSPECTRAL) 
  return(invisible(0))
 }
 
