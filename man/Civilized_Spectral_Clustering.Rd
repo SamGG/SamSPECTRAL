@@ -1,6 +1,8 @@
 \name{Civilized_Spectral_Clustering}
 \Rdversion{1.1}
 \alias{Civilized_Spectral_Clustering}
+\alias{ClusteringResult}
+\alias{ClusteringResult-class}
 
 \title{
     Runs the spectral clustering algorithm on the sample points.
@@ -47,12 +49,15 @@ Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conduct
 }
 
 \value{
-    \item{labels.for_num.of.clusters}{
-        The k'th element of this list is a vector containing the labels as result of clustering to k parts.}
-    \item{number.of.clusters }{
-        A list containing the desired cluster numbers.}
-    \item{eigen.space}{
-        The eigen vectors and eigen values of the normalized adjacency matrix computed for spectral clustering.}
+    \describe{
+        A \code{ClusteringResult} class object with the following slots,
+        \item{labels.for_num.of.clusters}{
+            The k'th element of this list is a vector containing the labels as result of clustering to k parts.}
+        \item{number.of.clusters }{
+            A list containing the desired cluster numbers.}
+        \item{eigen.space}{
+            The eigen vectors and eigen values of the normalized adjacency matrix computed for spectral clustering.}
+    }
 }
 
 \references{
