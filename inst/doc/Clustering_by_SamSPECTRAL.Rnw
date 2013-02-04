@@ -44,7 +44,9 @@ Not only it does not require a priori assumptions on the size, shape and distrib
 		 %%(\citealp{spectral_theory}).
 \end{itemize}
 
-However, because of the machine limitations, one faces serious empirical barriers in applying this method for large data sets. SamSPECTRAL is a modification to spectral clustering such that it will be applicable on large size datasets. 
+However, because of the machine limitations, one faces serious empirical barriers in applying this method for large data sets. SamSPECTRAL is a modification to spectral clustering such that it will be applicable on large size datasets.
+See the reference for more details and cite it if you use this
+approach.
 
 
 

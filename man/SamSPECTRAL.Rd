@@ -11,8 +11,11 @@
 }
 
 \usage{
-SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor,number.of.clusters = NA, scale=rep(1,dim(data.points)[2]),
-	talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=1000)
+SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor,number.of.clusters = "NA", scale=rep(1,dim(data.points)[2]),
+	    talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=100,
+	    k.for_kmeans = "NA", maximum.number.of.clusters=30, m=3000,
+	    minimum.eigenvalue = "NA", previous.result = NULL,
+	    replace.inf.with.extremum=TRUE, minimum.degree=0)
 }
 
 \arguments{
@@ -30,8 +33,7 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
     This threshold controls to what extend clusters should be combined or kept separate.Normally, an appropriate value will fall in range 0.3-2.}
 
   \item{number.of.clusters}{
-    The default value is NA which leads to computing the number of spectral clusters automatically, otherwise this number will
-		determine the number of spectral clusters. }
+    The default value is "NA" which leads to computing the number of spectral clusters automatically, otherwise it can be a vector of integers each of which determines the number of spectral clusters. The output will contain a clustering resulting from each value.}
 
   \item{talk}{
     A boolean flag with default value TRUE. Setting it to FALSE will keep running the procedure quite with no messages.}
@@ -61,6 +63,28 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
 	
   \item{stabilizer}{
     The larger this integer is, the final results will be more stable because the underlying kmeans will restart many more times.}
+
+  \item{k.for_kmeans}{
+    The number of clusters for running kmeans algorithm in spectral clustering. The default value of "NA" leads to automatic estimation based on eigen values curve.}
+
+  \item{maximum.number.of.clusters}{
+    An integer used to automatically estimate the number of clusters by fitting 2 regression lines on the eigen values curve.}
+
+  \item{m}{
+    An integer determining upper and lower bounds on the final number of sample points which will be in range  \code{.95*m/2} and 2 \code{1.1*m}}
+
+  \item{minimum.eigenvalue}{
+    If not "NA", the number of spectral clusters will be determined such that corresponding eigenvalues are larger than this threshold.}
+
+  \item{previous.result}{
+    If provided, the intermediate results from previous run can be passed to save on computing time while setting the parameters.}
+
+  \item{replace.inf.with.extremum}{
+    If TRUE, the Inf and -Inf values will be replaced by maximum and minimum of data in each direction.}
+
+  \item{minimum.degree}{
+    If a node in the graph has total edge sum less than this threshold, 
+      it will be considered as an isolated community.}
 
 }
 

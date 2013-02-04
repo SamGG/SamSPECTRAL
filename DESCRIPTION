@@ -1,13 +1,13 @@
 Package: SamSPECTRAL
 Type: Package
 Title: Identifies cell population in flow cytometry data.
-Version: 1.13.0
+Version: 1.13.2
 Date: 2009-09-05
 Author: Habil Zare and Parisa Shooshtari
-Maintainer: Habil Zare <habil_zare@yahoo.com>
+Maintainer: Habil Zare <zare@u.washington.edu>
 Depends: R (>= 2.10)
 Imports: methods
-Description: Given a matrix of coordinates as input, SamSPECTRAL first builds the communities to sample the data points. Then, it builds a graph and after weighting the edges by conductance computation, the graph is passed to a classic spectral clustering algorithm to find the spectral clusters. The last stage of SamSPECTRAL is to combine the spectral clusters. The resulting "connected components" estimate biological cell populations in the data sample. For instructions on manual installation, refer to the PDF file provided in the following documentation.
-License: GPL version 2 or newer
+Description: Samples large data such that spectral clustering is possible while preserving density information in edge weights. More specifically, given a matrix of coordinates as input, SamSPECTRAL first builds the communities to sample the data points. Then, it builds a graph and after weighting the edges by conductance computation, the graph is passed to a classic spectral clustering algorithm to find the spectral clusters. The last stage of SamSPECTRAL is to combine the spectral clusters. The resulting "connected components" estimate biological cell populations in the data sample. For instructions on manual installation, refer to the PDF file provided in the following documentation.
+License: GPL (>= 2)
 biocViews: Bioinformatics, FlowCytometry, CellBiology, Clustering, Cancer, FlowCytData, StemCells,  HIV
 LazyLoad: yes

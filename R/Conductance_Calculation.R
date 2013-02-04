@@ -80,5 +80,5 @@ Conductance_Calculation <- function(full, normal.sigma, space.length, society, p
 	########################### E N D ###########################
 	if(talk) message(Sys.time()-t1)
 
-	conductance
+	return(conductance)
 }

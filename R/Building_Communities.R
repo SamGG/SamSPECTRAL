@@ -56,7 +56,7 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 	# Call functions
 	#source("Compute_Close_Poits.R")
 	################################ packaging
-    	# This function gets the index of a points and compute and return all close points to it which is basically the indeces of all points closer than h.
+    	# This function gets the index of a point and computes and returns all close points to it which is basically the indeces of all points closer than h.
         # We use the metric: MAX (|X_1 -X_2| , |Y_1-Y_2|)
         Compute_Close_Points <- function(point.ind, h, n, dimention, epsilon){											
 	
@@ -70,15 +70,15 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
     	    # A matrix with height equal to total number of points which has copies of p on its     rows.
     	    difference <- abs(full - pmatrix)
         
-            #packaging
-	        #square.distance <- .Call("maximum_of_rows",difference)			# This vector, contains the distance between the point and all other points.
+                ## This vector, contains the distance between the point and all other points.
 	        square.distance <- .Call("maximum_of_rows",difference, PACKAGE = "SamSPECTRAL")			
 	        close.points <- which(square.distance < h )
 
 			# To compute epsilon which is almost the minimum distance between the points in the data,
 				min.index <- which(square.distance < epsilon & 0<square.distance)
-				epsilon <- min(c(epsilon, square.distance[min.index]) ) #We no not consider points with the same coordinates.
-				epsilon <- min(abs(square.distance-epsilon)) # We no not consider points with the same coordinates.
+                                        #We no not consider points with the same coordinates.
+				epsilon <- min(c(epsilon, square.distance[min.index]) )
+                                        
 	        result <- list(close.points= close.points, epsilon = epsilon)											
     	    return(result)
         }

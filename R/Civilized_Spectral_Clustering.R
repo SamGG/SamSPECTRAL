@@ -14,15 +14,17 @@
 # ClusteringResult 
 ############################################################################################################################ 
 setClass("ClusteringResult",
-        representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space="list"))
+        representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space="list",minimum.degree.sum="numeric"))
 #===========================================================================================================================
 
 
 # The function:
 #####################################################################################################################################################
-Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, society, conductance, iterations=200,number.of.clusters=NA, 
-									eigenvalues.num = NA, talk=TRUE, stabilizer=1000)
-{ 
+Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, society, conductance, iterations=200,
+                                          number.of.clusters="NA",
+                                          k.for_kmeans="NA",minimum.eigenvalue="NA", minimum.degree=0,
+                                          eigenvalues.num = NA, talk=TRUE, stabilizer=1000)
+{
 
 	t1<-Sys.time()
 	if(talk) message(t1)
@@ -67,7 +69,8 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 	if(talk) message(Sys.time())
    
     	d <- 1/sqrt(rowSums(km))
-	isolated.community.indices <- which(d==Inf)
+        isolated.community.indices <- which(d >= 1/minimum.degree)
+	##isolated.community.indices <- which(d==Inf)
 	if(length(isolated.community.indices) >0){
 	# Removing isolated outliers:
 		# If a point is so far from the rest, then it has little weight on all edges.
@@ -91,11 +94,6 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 	##
 	if(talk) message(Sys.time())
 	##	
-	##
-	#Showing eigen values:
-	if (!is.na(eigenvalues.num))
-		plot(eigen.space$values[1:eigenvalues.num], main=paste("normal.sigma= ",sigma) ) 
-	##
 	############################################# K_MEANS ##########################################################
 	#try({sample(1:100,10); rm(.Random.seed,inherits=TRUE)},silent=TRUE)	
 		# To remove the random seed which might be loaded from previouse workspace.	
@@ -103,55 +101,106 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 	# Each element contains the labels for that number of clusters.		
 	
 	############################ Estimating the number of clusters based on the "knee spot" ########################
-	if(is.na(number.of.clusters)){ # It needs to be determined "Automatically".
-		### linear regression
-		x.range <- maximum.number.of.clusters:(2*maximum.number.of.clusters)
-		slop <- eigen.space$values[x.range]
-		
-		# Built in R regresion	---> The line in known: ax+b
-		f <- lm(slop ~ x.range)
-        	coeff <- coef(f); 
-        	a <- as.numeric(as.character(coeff[2]))
-        	b <- as.numeric(as.character(coeff[1]))	
-		
-		# way(1): Finiding the last point in left of the regresion line in the graph of eigenvalues.
-		#  If a point is bellow the line, y-(ax+b) will be negative for that point.
-		last.value <-1
-		while (eigen.space$values[last.value] - (a*last.value +b ) < 0 )	#We have not reached the line yet.
-			last.value <- last.value +1
-		number.of.clusters <- last.value+1										# This is the first value in right of the regesion line.
-			
-		# way(2); We have: a * x_1 + b = 1 =>  x_1 = (1-b)/a, so:
-		#number.of.clusters <- round((1-b)/a); if(talk) message("way(2), after regresion")
-		if(talk) message("number.of.clusters is artificially forced to be >= 15")
-		number.of.clusters <- max(number.of.clusters,15)
-		if(talk) message("number.of.clusters is automatically calculated to be: ")
-		if(talk) message(paste("----------------------------------------------------> ", number.of.clusters))
-	}
+	##if(is.na(number.of.clusters)){ # It needs to be determined "Automatically".
+	##	### linear regression
+	##	x.range <- maximum.number.of.clusters:(2*maximum.number.of.clusters)
+	##	slop <- eigen.space$values[x.range]
+	##	
+	##	# Built in R regresion	---> The line in known: ax+b
+	##	f <- lm(slop ~ x.range)
+        ##	coeff <- coef(f); 
+        ##	a <- as.numeric(as.character(coeff[2]))
+        ##	b <- as.numeric(as.character(coeff[1]))	
+	##	
+	##	# way(1): Finiding the last point in left of the regresion line in the graph of eigenvalues.
+	##	#  If a point is bellow the line, y-(ax+b) will be negative for that point.
+	##	last.value <-1
+	##	while (eigen.space$values[last.value] - (a*last.value +b ) < 0 )	#We have not reached the line yet.
+	##		last.value <- last.value +1
+	##	number.of.clusters <- last.value+1										    ## This is the first value in right of the regesion line.
+	##		
+	##	# way(2); We have: a * x_1 + b = 1 =>  x_1 = (1-b)/a, so:
+	##	#number.of.clusters <- round((1-b)/a); if(talk) message("way(2), after regresion")
+	##	if(talk) message("number.of.clusters is artificially forced to be >= 15")
+	##	number.of.clusters <- max(number.of.clusters,15)
+	##	if(talk) message("number.of.clusters is automatically calculated to be: ")
+	##	if(talk) message(paste("----------------------------------------------------> ", number.of.clusters))
+	##}
+        #################################################################
+        
+### linear segmented regression
+	
+        x.range <- 1:(2*maximum.number.of.clusters)
+        knee.points <- eigen.space$values[x.range]
+        kneepointDetection.result <- kneepointDetection(knee.points) 
+        line1 <- kneepointDetection.result$l1
+        line2 <- kneepointDetection.result$l2
+    	coeff <- coefficients(line2); 
+    	a <- as.numeric(as.character(coeff[2]))
+    	b <- as.numeric(as.character(coeff[1]))	
+        
+### Finiding the last point in left of the regresion line in the graph of eigenvalues.
+        ##  If a point is bellow the line, y-(ax+b) will be negative for that point.
+        last.value <- kneepointDetection.result$MinIndex
+        while (eigen.space$values[last.value] - (a*last.value +b ) < 0 )
+          ##We have not reached the line yet.
+          last.value <- last.value +1
+        if(number.of.clusters=="NA"){ # It needs to be determined "Automatically".
+          if(minimum.eigenvalue!="NA"){	# We pick all the values above this threshold.
+            large.eigenvalues.num <- length(which(eigen.space$values>=minimum.eigenvalue))
+            number.of.clusters <- large.eigenvalues.num 
+          } else {	# We use the segmented regression.	
+            number.of.clusters <- last.value+1										
+            ## This is the first value in right of the regesion line.
+            if(number.of.clusters <15){ 
+              if(talk) message("number.of.clusters is artificially forced to be >= 15")
+              number.of.clusters <- 15
+            }##End if(number.of.clusters <15). 	
+            if(talk) message("number.of.clusters is automatically calculated to be: ")
+            if(talk) message(paste("----------------------------------------------------> ", number.of.clusters))
+          }##End elseif(!is.na(minimum.eigenvalue)).	
+        }##End if(is.na(number.of.clusters)).
 
+###Showing eigen values:
+	if (!is.na(eigenvalues.num)){
+          title <- paste("normal.sigma= ",sigma, ", knee point: ", last.value+1, ", number of large values:",
+                         number.of.clusters, sep='' ) 
+          plot(eigen.space$values[1:eigenvalues.num], main=title)
+          abline(a=coef(line1)[1],b=coef(line1)[2],col='blue')
+          abline(a=coef(line2)[1],b=coef(line2)[2],col='red')
+          abline(v=last.value+1, col='green')
+          abline(h=eigen.space$values[number.of.clusters], col='orange')
+	}##End if (!is.na(eigenvalues.num)).
+################################################################################
 
+        ## RUNNING KMEANS: ##
+        ##
 	for (i.number.of.clusters in 1: length(number.of.clusters)){	# For all different number of clusters,
-
-		centers <- number.of.clusters[i.number.of.clusters]	
-  
-		while (centers<n ){	# We will continue this until the output of kmeans is not "try_error".
-			try_kmeans <- try(silent=TRUE, {
-				if(talk) message("Runing kmeans...")
-	    		xi <- eigen.space$vectors[,1:centers]
-    			yi <- xi/sqrt(rowSums(xi^2))
-    			res <- kmeans(yi, centers, iterations, nstart=stabilizer)
-			# Returning the output for this number of clusters
-			  	cent <- matrix(unlist(lapply(1:centers,ll<- function(l){colMeans(x[which(res$cluster==l),])})),ncol=dim(x)[2], byrow=TRUE)
-			  	withss <- unlist(lapply(1:centers,ll<- function(l){sum((x[which(res$cluster==l),] - cent[l,])^2)}))
-			  	names(res$cluster) <- rown
-			})#End try.
-			if (is(try_kmeans,"try-error")){
-				centers <- centers + 1
-				if(talk) message("centers was increased to: ",centers)				
-			} else break #End if (try_kmeans=="try-error").
-		}#End while ( (try_kmeans=="start" | try_kmeans=="try-error" ) & centers<n ).
-		number.of.clusters[i.number.of.clusters] <- centers	# This may be changed in above.
-		################################### End of spectral ####################################
+          if (k.for_kmeans=="NA"){	# It is not given from outside.
+            centers.num <- number.of.clusters[i.number.of.clusters]	
+          } else {	
+            centers.num <- k.for_kmeans
+          }#End elseif (!is.na(k.for_kmeans)).  
+          
+          while (centers.num<n ){	# We will continue this until the output of kmeans is not "try_error".
+            try_kmeans <- try(silent=TRUE, {
+              if(talk) message("Runing kmeans...")
+              xi <- eigen.space$vectors[,1:centers.num]
+              yi <- xi/sqrt(rowSums(xi^2))
+              res <- kmeans(yi, centers.num, iterations, nstart=stabilizer)
+                                        # Returning the output for this number of clusters, EXTRA.
+              cent <- matrix(unlist(lapply(1:centers.num,ll<- function(l){colMeans(x[which(res$cluster==l),])})), 
+                             ncol=dim(x)[2], byrow=TRUE)
+              withss <- unlist(lapply(1:centers.num,ll<- function(l){sum((x[which(res$cluster==l),] - cent[l,])^2)}))
+              names(res$cluster) <- rown
+            })#End try.
+            if (is(try_kmeans,"try-error")){
+              centers.num <- centers.num + 1
+              if(talk) message("centers.num was increased to: ",centers.num)				
+            } else break #End if (try_kmeans=="try-error").
+          }#End while ( (try_kmeans=="start" | try_kmeans=="try-error" ) & centers.num<n ).
+          number.of.clusters[i.number.of.clusters] <- centers.num	# This may be changed in above.
+################################### End of spectral ####################################
 
 
 		###############################  start of saving results ###########################
@@ -162,16 +211,20 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		community.labels <- c()
 		num.of.added.isolated.communities <- 0
 		for (i in 1:n){
-			if (num.of.added.isolated.communities < length(isolated.community.indices)){		# there are more isolated communies to be added.
-				if (isolated.community.indices[num.of.added.isolated.communities+1] != i)	# i.e. the community i, has not been isolated,
-					community.labels[i] <- sc[i-num.of.added.isolated.communities]		# To see that this is true, 
-					# check it for when num.of.added.isolated.communities=0
-				else{	# the i'th community has been considered as isolated, 			# so we label it by 0.
+			if (num.of.added.isolated.communities < length(isolated.community.indices)){
+                          ## there are more isolated communies to be added.
+				if (isolated.community.indices[num.of.added.isolated.communities+1] != i)
+                                  ## i.e. the community i, has not been isolated,
+					community.labels[i] <- sc[i-num.of.added.isolated.communities]
+                                ## To see that this is true, 
+                                ## check it for when num.of.added.isolated.communities=0
+				else{	## the i'th community has been considered as isolated,
+                                  ## so we label it by 0.
 					community.labels[i] <- 0
 					num.of.added.isolated.communities <- num.of.added.isolated.communities +1
 				}
 			}
-			else	# We are done with isolated ones,
+			else	## We are done with isolated ones,
 				community.labels[i] <- sc[i-num.of.added.isolated.communities]	
 		}
 	
@@ -184,13 +237,14 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 		}
 	
 		#if(talk) message(paste(centers, "clusters were distinguished!"))
-		labels.for_num.of.clusters[[centers]] <- label
+		labels.for_num.of.clusters[[centers.num]] <- label
 
 	}# End of for loop for clustering.
 
 
 	result <- new('ClusteringResult', labels.for_num.of.clusters = labels.for_num.of.clusters, 
-					number.of.clusters = number.of.clusters, eigen.space = eigen.space)
+                      number.of.clusters = number.of.clusters, eigen.space = eigen.space,
+                      minimum.degree.sum=minimum.degree.sum)
 	############################################# E N D ###################################################
 	if(talk) message(Sys.time()-t1)
 

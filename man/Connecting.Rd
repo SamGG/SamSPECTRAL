@@ -53,7 +53,7 @@ Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: Data Reduction for 
 
 
 \author{
-Parisa Shooshtari and Habil Zare 
+Habil Zare and Parisa Shooshtari
 }
 
 \seealso{

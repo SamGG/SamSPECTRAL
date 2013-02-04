@@ -13,8 +13,10 @@
 }
 
 \usage{
-Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,iterations=200, number.of.clusters=NA,  
-								eigenvalues.num =NA, talk=TRUE,stabilizer=1000)
+  Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,
+				iterations=200, number.of.clusters="NA", 
+				k.for_kmeans="NA", minimum.eigenvalue="NA", minimum.degree=0, 
+				eigenvalues.num =NA, talk=TRUE,stabilizer=1000)
 }
 
 \arguments{
@@ -22,11 +24,20 @@ Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conduct
      The matrix containing the coordinates of all data points. }
 
   \item{maximum.number.of.clusters}{
-    This parameter is used for fitting the regression line.}
+    An integer used to automatically estimate the number of clusters by fitting 2 regression lines on the eigen values curve.}
 
   \item{number.of.clusters}{
-    The default value is NA which leads to computating the number of spectral clusters automatically, otherwise this number will
+    The default value is "NA" which leads to computating the number of spectral clusters automatically, otherwise this number will
 		determine the number of spectral clusters. }
+  \item{k.for_kmeans}{
+    The number of clusters for running kmeans algorithm in spectral clustering. The default value of "NA" leads to automatic estimation based on eigen values curve.}
+
+  \item{minimum.eigenvalue}{
+    If not "NA", the number of spectral clusters will be determined such that corresponding eigenvalues are larger than this threshold.}
+
+  \item{minimum.degree}{
+    If a node in the graph has total edge sum less than this threshold, 
+      it will be considered as an isolated community.}
 
   \item{society}{
     The list of communities.}
@@ -66,7 +77,7 @@ Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: Data Reduction for 
 
 
 \author{
-Parisa Shooshtari and Habil Zare}
+Habil Zare, Nima Aghaeepour and Parisa Shooshtari}
 
 \seealso{
 \code{\link{SamSPECTRAL}}
@@ -104,7 +115,7 @@ Parisa Shooshtari and Habil Zare}
 		number.of.clusters <- c(35,20)	
 			# This is faster than runnig Civilized_Spectral_Clustering() twice because the eigen space is not needed to be computed again.     
 		clust_result.not.automatic <- 
-			Civilized_Spectral_Clustering(full=full, society=society, conductance=conductance, number.of.clusters =number.of.clusters)    
+			Civilized_Spectral_Clustering(full=full, society=society, conductance=conductance, number.of.clusters =number.of.clusters, eigenvalues.num=60)    
 	    labels.for_num.of.clusters <- clust_result.not.automatic@labels.for_num.of.clusters
 		L35 <- labels.for_num.of.clusters[[35]]
 		L20 <- labels.for_num.of.clusters[[20]]

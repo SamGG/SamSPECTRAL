@@ -19,7 +19,7 @@ Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=
     The matrix containing the coordinates of all data points. }
     
   \item{m}{
-    Determines an upper bound on the final number of sample points which will be in range  \code{m} and 2 \code{m} }
+    An integer determining upper and lower bounds on the final number of sample points which will be in range  \code{.95*m/2} and 2 \code{1.1*m}}
     
   \item{space.length}{
     An estimate for the length of a cube that is assumed to contain all data points.}
@@ -41,7 +41,7 @@ Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=
 Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data. BMC Bioinformatics, 2010, 11:403.}
 
 \author{
-Parisa Shooshtari and Habil Zare 
+Habil Zare and Parisa Shooshtari 
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
