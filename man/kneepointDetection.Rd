@@ -19,8 +19,8 @@
     The vector of values on which the 2 regression lines will be fitted.}
   
   \item{PlotFlag}{  
-    If TRUE, an animation will be produced in tmpfigs folder 
-      that shows how the best model is selected in gif format.}
+    If TRUE and in unix, an animation will be produced in tmpfigs folder 
+      that shows how the best selected model in gif format.}
 }
 
 \details{
@@ -51,9 +51,9 @@
   plot(values)
 
   ## Find the knee point:
-  detected <- kneepointDetection(vect=values, PlotFlag=TRUE)
+  detected <- kneepointDetection(vect=values, PlotFlag=FALSE)
   print(detected$MinIndex)
-  ##  Also, look at animation.gif.
+  ##  Also, under unix, set PlotFlag=TRUE and look at animation.gif.
 }
 
 
