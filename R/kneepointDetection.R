@@ -38,11 +38,11 @@ kneepointDetection <- function(vect, PlotFlag=FALSE){
 		    system('mkdir tmpfigs');      
 		  png(sprintf('tmpfigs/%.3d.png', i))
 		  a<-as.data.frame(cbind(1:length(Vect), Vect))
-		  plot(a, xlim=c(0,n), ylim=c(0,max(a)), axes=FALSE, xlab='Iteration', ylab='Distance');
+		  plot(a, xlim=c(0,n), ylim=c(0,max(Vect)), axes=FALSE, xlab='Iteration', ylab='Distance');
 		  par(new=TRUE);
-		  plot(a[MinIndex,], pch=19, col='green', xlim=c(0,n), ylim=c(0,max(a)), axes=FALSE, xlab='Iteration', ylab='Distance')
+		  plot(a[MinIndex,], pch=19, col='green', xlim=c(0,n), ylim=c(0,max(Vect)), axes=FALSE, xlab='Iteration', ylab='Distance')
 		  par(new=TRUE);
-		  plot(a[i,], pch=19, col='red', xlim=c(0,n), ylim=c(0,max(a)), axes=FALSE, xlab='Iteration', ylab='Distance')
+		  plot(a[i,], pch=19, col='red', xlim=c(0,n), ylim=c(0,max(Vect)), axes=FALSE, xlab='Iteration', ylab='Distance')
 		  axis(1);axis(2);
 		  title(sprintf('SSD: %.3f',Error))
 		  title(sub='Red: Current Change Point       Green: Best Change Point');
