@@ -31,7 +31,7 @@ inline double max(double a, double b){
 // This is the square of distance between two points.
 // c=coordinates, d=dimention
 // inline, a tiny function that runs in register memory very fast.
-inline double Distance_power2(double *c, int pNum, int d, int ind1, int ind2)
+static inline double Distance_power2(double *c, int pNum, int d, int ind1, int ind2)
 {
 	int i;
 	double sum;
