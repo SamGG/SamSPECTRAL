@@ -1,0 +1,24 @@
+## To check rendering of citation, run readCitationFile("CITATION")
+
+citHeader("To cite package 'SamSPECTRAL' in publications use:")
+     
+## R >= 2.8.0 passes package metadata to citation().
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("nlme")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry="Article",
+        author = "H. Zare and P. Shooshtari and A. Gupta and R. R. Brinkman",
+        title = "{Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data}",
+        journal = "BMC Bioinformatics",
+        year = "2010",
+        volume = "11",
+        number = "1",
+        pages = "403",
+        month = "July",
+
+        textVersion = paste("Zare, H, et al.", "(2010) ", 
+        "Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data, BCM Bioinformatics.",
+        "URL: http://www.biomedcentral.com/1471-2105/11/403/", ".", sep=""))
+
+ 

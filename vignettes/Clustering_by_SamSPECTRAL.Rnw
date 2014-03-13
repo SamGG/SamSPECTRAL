@@ -51,32 +51,41 @@ approach.
 
 
 \section{How to run SamSPECTRAL?}
-SamSPECTRAL is an R package source that can be downloaded from BioCunductor. In Linux, it can be installed by the following command:
-\newline
+SamSPECTRAL is an R package source that can be downloaded from BioCunductor. 
+In Linux, it can be installed by the following command:
+
 $\\$
 \texttt{R CMD INSTALL SamSPECTRAL\_x.y.z.tar.gz}
 \newline
 $\\$
 where x.y.z. determines the version.
 
-The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. Before running this function on a data set, some parameters are required to be set including: normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples (Normally, 2 or 3 samples are sufficient). Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
+The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. 
+Before running this function on a data set, some parameters are required to be set including: 
+normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples 
+(Normally, 2 or 3 samples are sufficient). 
+Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
+
 
 
 
 \subsection{An example}
 
-This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is a flow frame (which is normally read from an FCS file using flowCore), then the object "small" in the following example should be replaced by expr($f$). 
+This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is a flow frame 
+(which is normally read from an FCS file using flowCore), 
+then the object "small" in the following example should be replaced by expr($f$). 
 
 
 
 \begin{center}
 <<f_example,fig=FALSE, echo=TRUE>>=
-    library(SamSPECTRAL)
-    data(small_data)
-	full <- small
-	
-    L <- SamSPECTRAL(full,dimension=c(1,2,3),normal.sigma = 200,separation.factor = 0.39)   
-	plot(full, pch='.', col= L)
+library(SamSPECTRAL)
+set.seed(4)
+data(small_data)
+full <- small
+
+L <- SamSPECTRAL(full,dimension=c(1,2,3),normal.sigma = 200,separation.factor = 0.39)   
+plot(full, pch='.', col= L)
 @
 \end{center}
 
@@ -88,24 +97,24 @@ The code computes the frequency of events in each component and adds a legend to
 
 \begin{center}
 <<f_example,fig=TRUE, echo=TRUE>>=
-	# Computing the frequency:
-	plot(full, pch='.', col= L)
-	frequency <- c()	
-	minimum.frequency <- 0.01	
-		# components smaller than this threshould, will not be aprear in the legend statistics.
-	frequency.large <- c()	
-	labels <- as.character(unique(L))
-	for(label in labels){
-		if(!is.na(label)){
-			frequency[label] <- length(which(L==label))/length(L)
-			if(frequency[label] > minimum.frequency)
-				frequency.large[label] <- frequency[label]
-		}
-	}	
-	print(frequency)	
+## Computing the frequency:
+plot(full, pch='.', col= L)
+frequency <- c()	
+minimum.frequency <- 0.01	
+## components smaller than this threshould, will not be aprear in the legend statistics.
+freq.large <- c()	
+labels <- as.character(unique(L))
+for(label in labels){
+  if(!is.na(label)){
+    frequency[label] <- length(which(L==label))/length(L)
+    if(frequency[label] > minimum.frequency)
+      freq.large[label] <- frequency[label]
+  }
+}	
+print(frequency)	
 
-	# Adding legend 
-	legend(x="topleft",as.character(round(frequency.large,3)),col=names(frequency.large),pch=19)
+## Adding legend 
+legend(x="topleft",as.character(round(freq.large,3)),col=names(freq.large),pch=19)
 @
 \end{center}
 
@@ -114,8 +123,12 @@ The code computes the frequency of events in each component and adds a legend to
 
 \section{Adjusting parameters}
 
-For efficiency, one can set $m=3000$ to keep the running time bellow 1 minute by a 2 GHz processor and normally the results remained satisfactory for flow cytometry data. The separation factor and scaling parameter ($\sigma$) are two main parameters that needed to be adjusted.
-The general way is to run SamSPECTRAL on one or two random data samples of a flow cytometry data set and try different values for $\sigma$ and separation factor. Then, the selected parameters were fixed and used to apply SamSPECTRAL on the rest of data samples. An efficient strategy is explained by the following example.
+For efficiency, one can set $m=3000$ to keep the running time bellow 1 minute by a 2 GHz processor
+and normally the results remained satisfactory for flow cytometry data. The separation factor 
+and scaling parameter ($\sigma$) are two main parameters that needed to be adjusted.
+The general way is to run SamSPECTRAL on one or two random data samples of a flow cytometry data set 
+and try different values for $\sigma$ and separation factor. Then, the selected parameters were fixed 
+and used to apply SamSPECTRAL on the rest of data samples. An efficient strategy is explained by the following example.
 
 
 
@@ -124,15 +137,15 @@ The general way is to run SamSPECTRAL on one or two random data samples of a flo
 
 <<ReadFiles2, echo=true,results=verbatim>>=
 
-    data(small_data)
-	full <- small
+data(small_data)
+full <- small
 @
 
-	The objects needed for creating this vignette can be directly computed or loaded from previously saved workspace to save time.
-	The later increases the speed of building this vignette.
+The objects needed for creating this vignette can be directly computed or loaded from previously saved workspace to save time.
+The later increases the speed of building this vignette.
 	
 <<ReadFiles2, echo=true,results=verbatim>>=
-	run.live <- FALSE
+run.live <- FALSE
 @
 
 
@@ -141,125 +154,117 @@ The following parameters are rarely needed to be changed for flow cytometry data
 
 
 <<ReadFiles2, echo=true,results=verbatim>>=	
-	# Parameters:
-    m <- 3000; 
-    community.weakness.threshold <-1; precision <- 6; 
-	maximum.number.of.clusters <- 30    
+## Parameters:
+m <- 3000; 
+community.weakness.threshold <-1; precision <- 6; 
+maximum.number.of.clusters <- 30    
 @
- 
+
 The following piece of code, scales the coordinates in range [0,1]:
 <<ReadFiles2, echo=true,results=verbatim>>=	
-	for (i.column in 1:dim(full)[2]){#For all columns
-		ith.column <- full[,i.column]
-		full[,i.column] <- (ith.column-min(ith.column)) /(max(ith.column) - min(ith.column) )  # This is the scaled column.
-	}#End for (i.column.
-	# Therefore, 	
-	space.length <- 1
+for (i.column in 1:dim(full)[2]){#For all columns
+  ith.column <- full[,i.column]
+  full[,i.column] <- (ith.column-min(ith.column)) /(max(ith.column) - min(ith.column) )  
+  ##^ This is the scaled column.
+}#End for (i.column.
+## Therefore, 	
+space.length <- 1
 @
 
 To perform faithful sampling, we run:
 <<f_sampling,fig=TRUE, echo=true,results=verbatim>>=	
-	# Sample the data and build the communities 
-    society <- Building_Communities(full,m, space.length, community.weakness.threshold)
-	plot(full[society$representatives, ], pch=20)
+## Sample the data and build the communities 
+society <- Building_Communities(full,m, space.length, community.weakness.threshold)
+plot(full[society$representatives, ], pch=20)
 @
 
 
 
 
 We intend to first find an appropriate value for $\sigma$ and then set separation factor. 
-Note that normal.sigma=$\frac{1}{\sigma^2}$, therefore, decreasing normal.sigma is equivalent to increasing $\sigma$ and visa versa.
+Note that normal.sigma=$\frac{1}{\sigma^2}$, therefore, decreasing normal.sigma is equivalent 
+to increasing $\sigma$ and visa versa.
 We start with normal.sigma=10:
 <<f_small,fig=TRUE, echo=true,results=verbatim>>=	
-	normal.sigma <- 10
-    # Compute conductance between communities
-    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
-    # Compute the eigenspace:
-    if (run.live){
-	    clust_result.10 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
-		eigen.values.10 <- clust_result.10@eigen.space$values
-	} else 
-		data("eigen.values.10")		
- 	plot(eigen.values.10[1:50])
+normal.sigma <- 10
+## Compute conductance between communities
+conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+## Compute the eigenspace:
+if (run.live){
+  clust_result.10 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+  eigen.values.10 <- clust_result.10@eigen.space$values
+} else 
+  data("eigen.values.10")		
+plot(eigen.values.10[1:50])
 @
-
-
 
 
 We observe that the eigen values curve does not have a "knee" shape. So we increase sigma:
 <<f_large,fig=TRUE, echo=true,results=verbatim>>=	
-	normal.sigma <- 1000
-    # Compute conductance between communities
-    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
-    # Compute the eigenspace:
-    if (run.live){
-	    clust_result.1000 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
-		eigen.values.1000 <- clust_result.1000@eigen.space$values
-	} else 
-		data("eigen.values.1000")		
- 	plot(eigen.values.1000[1:50])
+normal.sigma <- 1000
+## Compute conductance between communities
+conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+## Compute the eigenspace:
+if (run.live){
+  clust_result.1000 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+  eigen.values.1000 <- clust_result.1000@eigen.space$values
+} else 
+  data("eigen.values.1000")		
+plot(eigen.values.1000[1:50])
 @
 
 
-We observe that in the eigen values plot, "too many" values are close to 1 but for this example we do not expect 20 populations. So we decrease sigma:
+We observe that in the eigen values plot, "too many" values are close to 1 but for this example 
+we do not expect 20 populations. So we decrease sigma:
 <<f_appropriate,fig=TRUE, echo=true,results=verbatim>>=	
-	normal.sigma <- 250
-    # Compute conductance between communities
-    conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
-    # Compute the eigenspace:
-    clust_result.250 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
-	eigen.values.250 <- clust_result.250@eigen.space$values
- 	plot(eigen.values.250[1:50])
+normal.sigma <- 250
+## Compute conductance between communities
+conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+## Compute the eigenspace:
+clust_result.250 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+eigen.values.250 <- clust_result.250@eigen.space$values
+plot(eigen.values.250[1:50])
 @
 
-This is "a right" value for normal.sigma because the curve has now a knee shape. Even some variation to this parameter does not change the shape significantly (200 or 300 can be tried). 
+This is ``a right'' value for normal.sigma because the curve has now a knee shape. 
+Even some variation to this parameter does not change the shape significantly (200 or 300 can be tried). 
 
 Now having sigma been adjusted, separation factor can be tuned:
 <<f_sep1,fig=TRUE, echo=true,results=verbatim>>=	
-	# Extracting labels:
-    labels.for_num.of.clusters <- clust_result.250@labels.for_num.of.clusters
-	number.of.clusters <- clust_result.250@number.of.clusters
-    L33 <- labels.for_num.of.clusters[[number.of.clusters]]
-	# Setting septation factor:
-	separation.factor <- 0.1
-	# post-processing:
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
-	# ploting:
-    plot(full, pch='.', col= component.of)
+## Extracting labels:
+labels.for_num.of.clusters <- clust_result.250@labels.for_num.of.clusters
+number.of.clusters <- clust_result.250@number.of.clusters
+L33 <- labels.for_num.of.clusters[[number.of.clusters]]
+## Setting septation factor:
+separation.factor <- 0.1
+## post-processing:
+component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
+## ploting:
+plot(full, pch='.', col= component.of)
 @
 
-This value is too small for the separation factor and a population is combined by mistake. Therefore, we increase septation factor to separate the components more:
+This value is too small for the separation factor and a population is combined by mistake. 
+Therefore, we increase septation factor to separate the components more:
 <<f_sep2,fig=TRUE, echo=true,results=verbatim>>=	
-	# Setting septation factor:
-	separation.factor <- 0.5
-	# post-possesing:
-    component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
-	# ploting:
-    plot(full, pch='.', col= component.of)
+## Setting septation factor:
+separation.factor <- 0.5
+## post-possesing:
+component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
+## ploting:
+plot(full, pch='.', col= component.of)
 @
 
 This is the right value for separator factor as all population are now separated. 
 
-Now, we can fix these values for the parameters; normal.sigma=250 and separation.factor=0.5. One can run the SamSPECTRAL algorithm on the rest of the data set without changing them, hopefully, obtaining as appropriate results. 
+Now, we can fix these values for the parameters; normal.sigma=250 and separation.factor=0.5. 
+One can run the SamSPECTRAL algorithm on the rest of the data set without changing them, 
+hopefully, obtaining as appropriate results. 
 
 
 \section{Reference}
-Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: \textbf{Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data.} \textit{BMC Bioinformatics}, 2010, \textbf{11}:403.
-
-
-
+Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: 
+  \textbf{Data Reduction for Spectral Clustering to Analyse High Throughput Flow Cytometry Data.} 
+\textit{BMC Bioinformatics}, 2010, \textbf{11}:403.
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-

@@ -149,8 +149,8 @@ double compute_sum_of_edges(double *coordinates, int pointNum, int dimention,
 SEXP conductance_computation(SEXP society, SEXP coordinates, SEXP sigmaVal, SEXP betaVal)
 {
 	SEXP community, returnVal, coordDim;	
-	int communityNum, memberLen, i, j, pointNum, dimention;
-	double * coords, nbhood, di, dj, sigma, betaa,
+	int communityNum, i, j, pointNum, dimention;
+	double * coords, nbhood, sigma, betaa,
 			sumOfEdges, weightBetweenCommunities; //epsilon
 	int *density, *repres_ind;
 
