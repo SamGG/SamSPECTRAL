@@ -1,12 +1,6 @@
-%
-% NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
-% likely to be overwritten.
-%
-
-
 %\VignetteIndexEntry{A modified spectral clustering method for clustering Flow Cytometry Data}
 %\VignetteDepends{SamSPECTRAL}
-%\VignetteKeywords{}
+%\VignetteKeywords{spectral clustering, flow cytometry, community, graph}
 %\VignettePackage{SamSPECTRAL}
 \documentclass[12pt]{article}
 
@@ -60,11 +54,11 @@ $\\$
 $\\$
 where x.y.z. determines the version.
 
-The main function of this package is SamSPECTRAL() which is loaded by using the command library(SamSPECTRAL) in R. 
+The main function of this package is \Rfunction{SamSPECTRAL()} which is loaded by using the command library(SamSPECTRAL) in R. 
 Before running this function on a data set, some parameters are required to be set including: 
-normal.sigma and separation.factor. This can be best done by  running the algorithm on some number of samples 
+\Robject{normal.sigma} and \Robject{separation.factor}. This can be best done by  running the algorithm on some number of samples 
 (Normally, 2 or 3 samples are sufficient). 
-Then the function SamSPECTRAL() can be applied to all samples in that data set to identify cell populations in each sample data.
+Then the function \Rfunction{SamSPECTRAL()} can be applied to all samples in that data set to identify cell populations in each sample data.
 
 
 
@@ -73,7 +67,7 @@ Then the function SamSPECTRAL() can be applied to all samples in that data set t
 
 This example shows how SamSPECTRAL can be run on flow cytometry data. If $f$ is a flow frame 
 (which is normally read from an FCS file using flowCore), 
-then the object "small" in the following example should be replaced by expr($f$). 
+then the object ``small'' in the following example should be replaced by expr($f$). 
 
 
 
@@ -186,9 +180,9 @@ plot(full[society$representatives, ], pch=20)
 
 
 We intend to first find an appropriate value for $\sigma$ and then set separation factor. 
-Note that normal.sigma=$\frac{1}{\sigma^2}$, therefore, decreasing normal.sigma is equivalent 
+Note that \Robject{normal.sigma}=$\frac{1}{\sigma^2}$, therefore, decreasing \Robject{normal.sigma} is equivalent 
 to increasing $\sigma$ and visa versa.
-We start with normal.sigma=10:
+We start with \Robject{normal.sigma}=10:
 <<f_small,fig=TRUE, echo=true,results=verbatim>>=	
 normal.sigma <- 10
 ## Compute conductance between communities
@@ -206,7 +200,7 @@ plot(eigen.values.10[1:50])
 @
 
 
-We observe that the eigen values curve does not have a "knee" shape. So we increase sigma:
+We observe that the eigen values curve does not have a ``knee'' shape. So we increase sigma:
 <<f_large,fig=TRUE, echo=true,results=verbatim>>=	
 normal.sigma <- 1000
 ## Compute conductance between communities
@@ -222,8 +216,7 @@ if (run.live){
 plot(eigen.values.1000[1:50])
 @
 
-
-We observe that in the eigen values plot, "too many" values are close to 1 but for this example 
+We observe that in the eigen values plot, ``too many'' values are close to 1 but for this example 
 we do not expect 20 populations. So we decrease sigma:
 <<f_appropriate,fig=TRUE, echo=true,results=verbatim>>=	
 normal.sigma <- 250
@@ -238,13 +231,13 @@ eigen.values.250 <- clust_result.250@eigen.space$values
 plot(eigen.values.250[1:50])
 @
 
-This is ``a right'' value for normal.sigma because the curve has now a knee shape. 
+This is ``a right'' value for \Robject{normal.sigma} because the curve has now a knee shape. 
 Even some variation to this parameter does not change the shape significantly (200 or 300 can be tried). 
 
 \subsubsection{Technical note on the number of spectral clusters}
 This section is very technical and the first-time user may skip it.
 You can see the fitted lines that estimated the number of spectral
-clusters by setting eigenvalues.num to a natural number.
+clusters by setting \Robject{eigenvalues.num} to a natural number.
 Note that the final number
 of populations can be less than the number of spectral clusters
 because some may be combined in the postprocessing step.
@@ -260,9 +253,9 @@ one line to those values that are very close to 1 (blue),
 and another line to the smaller values that decrease almost linearly (red).
 The number of top eigen values considered for this purpose are
 controlled by the parameter maximum.number.of.clusters and the best
-fit is computed by kneepointDetection() function. 
+fit is computed by \Rfunction{kneepointDetection()} function. 
 
-Alternatively, by setting the flag one.line to true, another approach
+Alternatively, by setting the flag \Robject{one.line} to true, another approach
 is to estimate the number of spectral clusters by fitting only
 one line to the linearly decreasing values. While this approach was the
 default in the older versions of SamSPECTRAL, some users found it to
@@ -313,7 +306,7 @@ This is the right value for separator factor as all population are now separated
 
 
 \subsubsection{Running SamSPECTRAL on large data sets}
-Now, we can fix these values for the parameters; normal.sigma=250 and separation.factor=0.5. 
+Now, we can fix these values for the parameters; \Robject{normal.sigma}=250 and \Robject{separation.factor}=0.5. 
 One can run the SamSPECTRAL algorithm on the rest of the data set without changing them, 
 hopefully, obtaining as appropriate results. Normally, adjusting
 parameters for every sample again is not necessary as long as the
