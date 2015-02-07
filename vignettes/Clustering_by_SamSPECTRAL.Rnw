@@ -84,7 +84,8 @@ set.seed(4)
 data(small_data)
 full <- small
 
-L <- SamSPECTRAL(full,dimension=c(1,2,3),normal.sigma = 200,separation.factor = 0.39)   
+L <- SamSPECTRAL(full,dimension=c(1,2,3),normal.sigma = 200,
+                 separation.factor = 0.39)   
 plot(full, pch='.', col= L)
 @
 \end{center}
@@ -101,7 +102,8 @@ The code computes the frequency of events in each component and adds a legend to
 plot(full, pch='.', col= L)
 frequency <- c()	
 minimum.frequency <- 0.01	
-## components smaller than this threshould, will not be aprear in the legend statistics.
+## components smaller than this threshould
+## will not be aprear in the legend statistics.
 freq.large <- c()	
 labels <- as.character(unique(L))
 for(label in labels){
@@ -114,7 +116,8 @@ for(label in labels){
 print(frequency)	
 
 ## Adding legend 
-legend(x="topleft",as.character(round(freq.large,3)),col=names(freq.large),pch=19)
+legend(x="topleft",as.character(round(freq.large,3)),
+       col=names(freq.large),pch=19)
 @
 \end{center}
 
@@ -163,8 +166,8 @@ maximum.number.of.clusters <- 30
 The following piece of code, scales the coordinates in range [0,1]:
 <<ReadFiles2, echo=true,results=verbatim>>=	
 for (i.column in 1:dim(full)[2]){#For all columns
-  ith.column <- full[,i.column]
-  full[,i.column] <- (ith.column-min(ith.column)) /(max(ith.column) - min(ith.column) )  
+  ith.col <- full[,i.column]
+  full[,i.column] <- (ith.col-min(ith.col)) /(max(ith.col) - min(ith.col) )  
   ##^ This is the scaled column.
 }#End for (i.column.
 ## Therefore, 	
@@ -174,7 +177,8 @@ space.length <- 1
 To perform faithful sampling, we run:
 <<f_sampling,fig=TRUE, echo=true,results=verbatim>>=	
 ## Sample the data and build the communities 
-society <- Building_Communities(full,m, space.length, community.weakness.threshold)
+society <- 
+    Building_Communities(full,m, space.length, community.weakness.threshold)
 plot(full[society$representatives, ], pch=20)
 @
 
@@ -188,10 +192,13 @@ We start with normal.sigma=10:
 <<f_small,fig=TRUE, echo=true,results=verbatim>>=	
 normal.sigma <- 10
 ## Compute conductance between communities
-conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+conductance <- Conductance_Calculation(full, normal.sigma, space.length, 
+                                       society, precision)
 ## Compute the eigenspace:
 if (run.live){
-  clust_result.10 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+  clust_result.10 <- 
+      Civilized_Spectral_Clustering(full, maximum.number.of.clusters, 
+                                    society, conductance,stabilizer=1)    
   eigen.values.10 <- clust_result.10@eigen.space$values
 } else 
   data("eigen.values.10")		
@@ -206,7 +213,9 @@ normal.sigma <- 1000
 conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
 ## Compute the eigenspace:
 if (run.live){
-  clust_result.1000 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+  clust_result.1000 <- 
+      Civilized_Spectral_Clustering(full, maximum.number.of.clusters, 
+                                    society, conductance,stabilizer=1)    
   eigen.values.1000 <- clust_result.1000@eigen.space$values
 } else 
   data("eigen.values.1000")		
@@ -219,9 +228,12 @@ we do not expect 20 populations. So we decrease sigma:
 <<f_appropriate,fig=TRUE, echo=true,results=verbatim>>=	
 normal.sigma <- 250
 ## Compute conductance between communities
-conductance <- Conductance_Calculation(full, normal.sigma, space.length, society, precision)
+conductance <- Conductance_Calculation(full, normal.sigma, space.length, 
+                                       society, precision)
 ## Compute the eigenspace:
-clust_result.250 <- Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,stabilizer=1)    
+clust_result.250 <- 
+    Civilized_Spectral_Clustering(full, maximum.number.of.clusters, 
+                                  society, conductance,stabilizer=1)    
 eigen.values.250 <- clust_result.250@eigen.space$values
 plot(eigen.values.250[1:50])
 @
@@ -229,6 +241,45 @@ plot(eigen.values.250[1:50])
 This is ``a right'' value for normal.sigma because the curve has now a knee shape. 
 Even some variation to this parameter does not change the shape significantly (200 or 300 can be tried). 
 
+\subsubsection{Technical note on the number of spectral clusters}
+This section is very technical and the first-time user may skip it.
+You can see the fitted lines that estimated the number of spectral
+clusters by setting eigenvalues.num to a natural number.
+Note that the final number
+of populations can be less than the number of spectral clusters
+because some may be combined in the postprocessing step.
+<<f_lines,fig=TRUE, echo=true,results=verbatim>>=	
+## Fitting two lines:
+clust_result.250 <- 
+    Civilized_Spectral_Clustering(full, maximum.number.of.clusters, 
+                                  society, conductance,stabilizer=1,
+                                  eigenvalues.num=50)    
+@
+By default two regression lines are fitted to a number of top eigen values, 
+one line to those values that are very close to 1 (blue), 
+and another line to the smaller values that decrease almost linearly (red).
+The number of top eigen values considered for this purpose are
+controlled by the parameter maximum.number.of.clusters and the best
+fit is computed by kneepointDetection() function. 
+
+Alternatively, by setting the flag one.line to true, another approach
+is to estimate the number of spectral clusters by fitting only
+one line to the linearly decreasing values. While this approach was the
+default in the older versions of SamSPECTRAL, some users found it to
+be more appropriate in some application. Most likely, because it leads
+to over estimating the number of spectral clusters, the results can be
+better in practice; 
+after all, those populations that are split will be combined 
+at the postprocessing stage.
+<<f_line,fig=TRUE, echo=true,results=verbatim>>=
+## Fitting one line:
+clust_result.250 <- 
+    Civilized_Spectral_Clustering(full, maximum.number.of.clusters, 
+                                  society, conductance,stabilizer=1,
+                                  eigenvalues.num=50, one.line=TRUE)
+@
+
+\subsubsection{Adjusting separation factor}
 Now having sigma been adjusted, separation factor can be tuned:
 <<f_sep1,fig=TRUE, echo=true,results=verbatim>>=	
 ## Extracting labels:
@@ -238,7 +289,9 @@ L33 <- labels.for_num.of.clusters[[number.of.clusters]]
 ## Setting septation factor:
 separation.factor <- 0.1
 ## post-processing:
-component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
+component.of <- 
+    Connecting(full, society, conductance, number.of.clusters, 
+               labels.for_num.of.clusters, separation.factor)$label
 ## ploting:
 plot(full, pch='.', col= component.of)
 @
@@ -249,16 +302,23 @@ Therefore, we increase septation factor to separate the components more:
 ## Setting septation factor:
 separation.factor <- 0.5
 ## post-possesing:
-component.of <- Connecting(full, society, conductance, number.of.clusters, labels.for_num.of.clusters, separation.factor)$label
+component.of <- 
+    Connecting(full, society, conductance, number.of.clusters, 
+               labels.for_num.of.clusters, separation.factor)$label
 ## ploting:
 plot(full, pch='.', col= component.of)
 @
 
 This is the right value for separator factor as all population are now separated. 
 
+
+\subsubsection{Running SamSPECTRAL on large data sets}
 Now, we can fix these values for the parameters; normal.sigma=250 and separation.factor=0.5. 
 One can run the SamSPECTRAL algorithm on the rest of the data set without changing them, 
-hopefully, obtaining as appropriate results. 
+hopefully, obtaining as appropriate results. Normally, adjusting
+parameters for every sample again is not necessary as long as the
+experiment conditions such as number of events and the dimension stays
+roughly the same.
 
 
 \section{Reference}

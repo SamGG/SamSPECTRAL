@@ -15,7 +15,7 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
 	    talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=100,
 	    k.for_kmeans = "NA", maximum.number.of.clusters=30, m=3000,
 	    minimum.eigenvalue = "NA", previous.result = NULL,
-	    replace.inf.with.extremum=TRUE, minimum.degree=0)
+	    replace.inf.with.extremum=TRUE, minimum.degree=0, one.line=FALSE)
 }
 
 \arguments{
@@ -85,6 +85,9 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
   \item{minimum.degree}{
     If a node in the graph has total edge sum less than this threshold, 
       it will be considered as an isolated community.}
+
+  \item{one.line}{
+    If TRUE, the number of spectral clusters are estimated by fitting 1 line to the eigen values curve. Otherwise 2 lines are fitted.}
 
 }
 

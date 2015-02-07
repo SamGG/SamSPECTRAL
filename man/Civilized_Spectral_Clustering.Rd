@@ -16,7 +16,7 @@
   Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,
 				iterations=200, number.of.clusters="NA", 
 				k.for_kmeans="NA", minimum.eigenvalue="NA", minimum.degree=0, 
-				eigenvalues.num =NA, talk=TRUE,stabilizer=1000)
+				eigenvalues.num =NA, talk=TRUE,stabilizer=1000, one.line=FALSE)
 }
 
 \arguments{
@@ -56,6 +56,9 @@
 
   \item{stabilizer}{
     The larger this integer is, the final results will be more stable because the underlying kmeans will restart many more times.}        
+
+  \item{one.line}{
+    If TRUE, the number of spectral clusters are estimated by fitting 1 line to the eigen values curve. Otherwise 2 lines are fitted.}
   
 }
 

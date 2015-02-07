@@ -14,10 +14,10 @@ function(lib, pkg)
  return(invisible(0))
 }
 
-   	#dyn.load("SamSPECTRAL.so")                     # C function, packaging
-    #dyn.load("maximum_of_rows.so")				    # C function
-    #dyn.load("conductance_computation.so")			# C function
-    #source("functions1.R")
+###dyn.load("SamSPECTRAL.so")                     # C function, packaging
+###dyn.load("maximum_of_rows.so")				    # C function
+###dyn.load("conductance_computation.so")			# C function
+###source("functions1.R")
 
 
 ### MAIN function ###
@@ -26,7 +26,7 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
 	number.of.clusters="NA", scale=rep(1,dim(data.points)[2]),talk=TRUE, precision=6, eigenvalues.num=NA,
 	return_only.labels=TRUE, do.sampling=TRUE, beta=4,stabilizer=100,
 	k.for_kmeans="NA",maximum.number.of.clusters=30,m=3000,minimum.eigenvalue="NA", previous.result=NULL,
-	replace.inf.with.extremum=TRUE, minimum.degree=0){ 
+	replace.inf.with.extremum=TRUE, minimum.degree=0, one.line=FALSE){ 
 # INPUT
 # maximum.number.of.clusters=30			
 						# We use this parameter to find the "knee spot" and then estimate 
@@ -165,7 +165,7 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
 		    clust_result <- Civilized_Spectral_Clustering(full=full,maximum.number.of.clusters=maximum.number.of.clusters,
 		    society=society,conductance=conductance, k.for_kmeans=k.for_kmeans,number.of.clusters=number.of.clusters,
 		    talk=talk, eigenvalues.num = eigenvalues.num, stabilizer=stabilizer,
-		    minimum.eigenvalue=minimum.eigenvalue, minimum.degree=minimum.degree)  
+		    minimum.eigenvalue=minimum.eigenvalue, minimum.degree=minimum.degree, one.line=one.line)
     number.of.clusters <- clust_result@number.of.clusters
     labels.for_num.of.clusters <- clust_result@labels.for_num.of.clusters
     
