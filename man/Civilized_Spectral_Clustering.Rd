@@ -16,7 +16,8 @@
   Civilized_Spectral_Clustering(full, maximum.number.of.clusters, society, conductance,
 				iterations=200, number.of.clusters="NA", 
 				k.for_kmeans="NA", minimum.eigenvalue="NA", minimum.degree=0, 
-				eigenvalues.num =NA, talk=TRUE,stabilizer=1000, one.line=FALSE)
+				eigenvalues.num =NA, talk=TRUE,stabilizer=1000, one.line=FALSE,
+				replace.inf.with.extremum=TRUE)
 }
 
 \arguments{
@@ -59,6 +60,9 @@
 
   \item{one.line}{
     If TRUE, the number of spectral clusters are estimated by fitting 1 line to the eigen values curve. Otherwise 2 lines are fitted.}
+
+  \item{replace.inf.with.extremum}{
+    If TRUE, the Inf and -Inf values will be replaced by maximum and minimum of data in each direction.}
   
 }
 
@@ -83,7 +87,7 @@ Zare, H. and Shooshtari, P.  and Gupta, A. and Brinkman R.B: Data Reduction for 
 Habil Zare, Nima Aghaeepour and Parisa Shooshtari}
 
 \seealso{
-\code{\link{SamSPECTRAL}}
+\code{\link{SamSPECTRAL}},\code{\link{check.SamSPECTRAL.input}}
 }
 
 \examples{

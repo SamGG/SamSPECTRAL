@@ -23,7 +23,8 @@ setClass("ClusteringResult",
 Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, society, conductance, iterations=200,
                                           number.of.clusters="NA",
                                           k.for_kmeans="NA",minimum.eigenvalue="NA", minimum.degree=0,
-                                          eigenvalues.num = NA, talk=TRUE, stabilizer=1000, one.line=FALSE)
+                                          eigenvalues.num = NA, talk=TRUE, stabilizer=1000, one.line=FALSE,
+                                          replace.inf.with.extremum=TRUE)
 {
 
     t1<-Sys.time()
@@ -39,9 +40,11 @@ Civilized_Spectral_Clustering <- function(full, maximum.number.of.clusters=30, s
 
 
     ## Initialization
-    n <- dim(full)[1]				## Total number of points.
-    dimention <-dim(full)[2]			## The number of measured parameters.
+    n <- dim(full)[1] ## Total number of points.
 
+    ## Input checking:
+    checked <- check.SamSPECTRAL.input(data.points=full,replace.inf.with.extremum=replace.inf.with.extremum)
+    full <- checked$data.matrix
 
     ## Weightening based on community conductance
     conductance.matrix <- conductance$conductance.matrix

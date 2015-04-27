@@ -10,7 +10,8 @@ For each two communities, the conductance between their members is summed up and
 }
 
 \usage{
-Conductance_Calculation(full, normal.sigma, space.length, society, precision, talk=TRUE, beta=4)
+Conductance_Calculation(full, normal.sigma, space.length, society, precision, talk=TRUE, beta=4,
+			      replace.inf.with.extremum=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,6 +37,10 @@ Conductance_Calculation(full, normal.sigma, space.length, society, precision, ta
     A parameter with default value 4 which must NOT be changed except for huge samples with more than 100,000 data points or for developmental purposes.
  	Setting beta to zero will reduce computational time by applying the following approximation to the conductance calculation step. 
 	For each two community, the conductance will be the conductance between their representatives times their sizes.}
+
+  \item{replace.inf.with.extremum}{
+    If TRUE, the Inf and -Inf values will be replaced by maximum and minimum of data in each direction.}
+
 }
 
 \value{
@@ -51,7 +56,7 @@ Habil Zare and Parisa Shooshtari}
 
 
 \seealso{
-\code{\link{SamSPECTRAL}}
+\code{\link{SamSPECTRAL}},\code{\link{check.SamSPECTRAL.input}}
 }
 \examples{
 

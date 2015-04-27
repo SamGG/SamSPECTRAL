@@ -39,38 +39,10 @@ SamSPECTRAL <- function (data.points, dimensions=1:dim(data.points)[2], normal.s
 						# it will be considered as an isolated community.
 
 	### Input checking:
-		if( class(data.points)!="matrix" ){  #Check if there are enough number of points, stored in the data.matrix.
-			if(talk) message("BAD input for SamSPECTRAL!, maybe it is not a matrix.")
-			return(NULL)
-		}# else, the input is good.    
+        checked <- check.SamSPECTRAL.input(data.points=data.points,dimensions=dimensions,
+                                           replace.inf.with.extremum=replace.inf.with.extremum)
+        data.matrix <- checked$data.matrix
 
-		# Read data files and transform them using log transform
-		data.matrix	<- as.matrix(data.points[,dimensions])	
-			# If dim of the above matrix is n*1, then R will do stupid trasformation from matrix to vector.
-		
-		# contains NA ?
-		if (!prod(!is.na(data.matrix))){	# The input contains NA or NaN, so bad!
-			if(talk) message("BAD input for SamSPECTRAL!, it expects only numbers not any NA or NaN.")
-			return(NULL)
-		}    
-
-		# contains +/- Inf ?
-		if ( !prod(!is.infinite(data.matrix)) ){	# The input contains +/-Inf,
-			if(!replace.inf.with.extremum ){
-				if(talk) message("BAD input for SamSPECTRAL!, it expects only numbers not Inf or -Inf.")
-				return(NULL)
-			}	
-			#replacing with extremum,
-			positive.inf.indices <- which(is.infinite(data.matrix) & data.matrix >0)
-			negative.inf.indices <- which(is.infinite(data.matrix) & data.matrix <0)
-			data.matrix[is.infinite(data.matrix)] <- NA
-			max.value <- max(data.matrix, na.rm=TRUE)
-			min.value <- min(data.matrix, na.rm=TRUE)
-			data.matrix[positive.inf.indices] <- max.value
-			data.matrix[negative.inf.indices] <- min.value
-		}# else, the input is good.    
-	
-	
 	# keeping input.
 	input= list()	# We would linke to return back all the input at the end.
 	input[["data.points"]] <- data.points

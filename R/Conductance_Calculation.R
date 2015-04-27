@@ -39,7 +39,8 @@
 
 
 
-Conductance_Calculation <- function(full, normal.sigma, space.length, society, precision, talk=TRUE, beta=4)
+Conductance_Calculation <- function(full, normal.sigma, space.length, society, precision, talk=TRUE, beta=4,
+                                    replace.inf.with.extremum=TRUE)
 {
 	t1<-Sys.time()
 	if(talk) message(t1)
@@ -57,9 +58,9 @@ Conductance_Calculation <- function(full, normal.sigma, space.length, society, p
 	community <- society$communities
 	num.of.cummnities <- length(community)
 
-	### Initialization
-	n <- dim(full)[1]			# Total number of points.
-	dimention <-dim(full)[2]		# The number of measured parameters.
+        ## Input checking:
+        checked <- check.SamSPECTRAL.input(data.points=full,replace.inf.with.extremum=replace.inf.with.extremum)
+        full <- checked$data.matrix
 
 
 	### Computing conductance between communites:

@@ -11,7 +11,8 @@
 }
 
 \usage{
-Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=1, talk=TRUE, do.sampling=TRUE)
+Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=1, talk=TRUE, do.sampling=TRUE,
+			   replace.inf.with.extremum=TRUE)
 }
 
 \arguments{
@@ -32,6 +33,9 @@ Building_Communities(full, m=3000, space.length=1, community.weakness.threshold=
 
   \item{do.sampling}{
     A boolean flag with default value TRUE. If set to FALSE, the sampling stage will be ignored by picking up all the data points.}
+
+  \item{replace.inf.with.extremum}{
+    If TRUE, the Inf and -Inf values will be replaced by maximum and minimum of data in each direction.}
 }
 
 \value{
@@ -47,7 +51,7 @@ Habil Zare and Parisa Shooshtari
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{SamSPECTRAL}}
+\code{\link{SamSPECTRAL}},\code{\link{check.SamSPECTRAL.input}}
 }
 
 \examples{

@@ -115,7 +115,7 @@ Habil Zare and Parisa Shooshtari}
 
 \seealso{
 \code{\link{SamSPECTRAL}}, \code{\link{Building_Communities}}, \code{\link{Conductance_Calculation}}, 
-\code{\link{Civilized_Spectral_Clustering}}, \code{\link{Connecting}}
+\code{\link{Civilized_Spectral_Clustering}}, \code{\link{Connecting}},\code{\link{check.SamSPECTRAL.input}}
 }
 
 \examples{

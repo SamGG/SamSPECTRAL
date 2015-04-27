@@ -40,7 +40,8 @@
 # Good luck with implementing this idea!
 ###########################################################################
 
-Building_Communities <- function(full, m=3000, space.length=1, community.weakness.threshold=1,talk=TRUE, do.sampling=TRUE)
+Building_Communities <- function(full, m=3000, space.length=1, community.weakness.threshold=1,talk=TRUE, do.sampling=TRUE,
+                                 replace.inf.with.extremum=TRUE)
 {
 	
 
@@ -48,17 +49,23 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 	if(talk) message(t1)
 	########################### S T A R T ##########################
 
-
+        
 	### Initialization
 	n <- dim(full)[1]			# number of points.
-	dimention <-dim(full)[2]	# the number of measured parameters.
+	dimension <-dim(full)[2]	# the number of measured parameters.
 
+        ## Input checking:
+        checked <- check.SamSPECTRAL.input(data.points=full,dimensions=1:dimension,
+                                           replace.inf.with.extremum=replace.inf.with.extremum)
+        full <- checked$data.matrix
+
+        
 	# Call functions
 	#source("Compute_Close_Poits.R")
 	################################ packaging
     	# This function gets the index of a point and computes and returns all close points to it which is basically the indeces of all points closer than h.
         # We use the metric: MAX (|X_1 -X_2| , |Y_1-Y_2|)
-        Compute_Close_Points <- function(point.ind, h, n, dimention, epsilon){											
+        Compute_Close_Points <- function(point.ind, h, n, dimension, epsilon){											
 	
     	    point <-full[point.ind,]
     	    
@@ -66,7 +73,7 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
     	    total.number <-	n							
     	    # This is the total number of points in the space.			
         
-    	    pmatrix<- t(matrix(point, dimention, total.number)) 			
+    	    pmatrix<- t(matrix(point, dimension, total.number)) 			
     	    # A matrix with height equal to total number of points which has copies of p on its     rows.
     	    difference <- abs(full - pmatrix)
         
@@ -92,9 +99,9 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 	if(talk) message(" Any position related order may cause problem.")
 
 	### Computing h=nbhood
-	nbhood <- (space.length/ (m ^ (1/dimention)) )/2 	# Points closer than this threshould are considered as neighbours, This derives from the formula: 
+	nbhood <- (space.length/ (m ^ (1/dimension)) )/2 	# Points closer than this threshould are considered as neighbours, This derives from the formula: 
 								# average neighbours of a pixel = n/m = (2 * nbhood)^d * (n/l^d) where l is the length of the universe
-								# and d is its dimention. 
+								# and d is its dimension. 
 
 	if(talk) message(paste("neighbourhood = ", nbhood))
 
@@ -131,7 +138,7 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 				repres.indeces[repres.num] <- i
 		
 				if (do.sampling){
-					ccp <- Compute_Close_Points(repres.indeces[repres.num],nbhood, n, dimention, epsilon)
+					ccp <- Compute_Close_Points(repres.indeces[repres.num],nbhood, n, dimension, epsilon)
 					close.points <- ccp$close.points
 					epsilon <- ccp$epsilon
 					repres.density[repres.num] <- length(close.points)		
@@ -163,7 +170,7 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
 		
 		
 	
-		k<- (m/repres.num)^(1/dimention)
+		k<- (m/repres.num)^(1/dimension)
 		
 		if (nbhood < epsilon) break                             # If this happens, then we will not get more communities by decreasing nbhood!
 		#if (nbhood < nbhood / k) break                         # This happens when nbhood is not reduced by dividing by k!
@@ -172,7 +179,7 @@ Building_Communities <- function(full, m=3000, space.length=1, community.weaknes
     		                                                    # then nbhood will converge to the persision level of the machine (10^(-324))
     		                                                    
 		nbhood <- nbhood / k									# <= We can reduce nbhood to go to higher resolution. 
-																# By dividing by 2^(1/dimention), we expect the number of cummunities to double
+																# By dividing by 2^(1/dimension), we expect the number of cummunities to double
 																# as the volumne of each community will be devided by two..
 																
 		if(talk) message(paste("neighbourhood is changed to: ", nbhood))
