@@ -15,7 +15,7 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
 	    talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=100,
 	    k.for_kmeans = "NA", maximum.number.of.clusters=30, m=3000,
 	    minimum.eigenvalue = "NA", previous.result = NULL,
-	    replace.inf.with.extremum=TRUE, minimum.degree=0, one.line=FALSE)
+	    replace.inf.with.extremum=TRUE, minimum.degree=0, one.line=FALSE, doOrderLabels=TRUE)
 }
 
 \arguments{
@@ -89,20 +89,27 @@ SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separat
   \item{one.line}{
     If TRUE, the number of spectral clusters are estimated by fitting 1 line to the eigen values curve. Otherwise 2 lines are fitted.}
 
+  \item{doOrderLabels}{Used for debugging. If TRUE, after connecting components, relabeling will be done such that the largest 
+  component gets label 1. If FALSE, the label of each data point will be the index of the component it belongs 
+  to (after connecting components).}
 }
 
 
 \details{
-	Hints for setting \code{separation.factor} and \code{normal.sigma}: While \code{separation.factor}=0.7 is normally an appropriate value for many datasets, 
-		for others some value in range 0.3 to 1.2 may produce better results depending on what populations are of particular interest.
-		The larger \code{normal.sigma} is the algorithm will find smaller clusters. It can be adjusted best by considering the plot of eigenvalues as explained in the vignette.
+	Hints for setting \code{separation.factor} and \code{normal.sigma}: 
+	While \code{separation.factor}=0.7 is normally an appropriate value for many datasets, 
+	for others some value in range 0.3 to 1.2 may produce better results depending on what populations are of particular interest.
+	The larger \code{normal.sigma} is the algorithm will find smaller clusters. 
+	It can be adjusted best by considering the plot of eigenvalues as explained in the vignette.
 }
 
 
 \value{
     Returns a vector of labels for data points. If the input parameter return_only.labels is set to FALSE, all the objects 
-		that are computed during the intermediate will be returned including: society for sampling stage, conductance for similarity calculation, and
-		clustering_result.
+    that are computed during the intermediate will be returned including: society from sampling stage, 
+    conductance from similarity calculation, clustering_result, component.of from connecting step 
+    (the same as labels if doOrderLabels=FALSE, used for debugging), 
+    timeTaken, and sizes which is a table of size of each component.
 }
 
 \references{
