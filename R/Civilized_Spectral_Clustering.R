@@ -14,7 +14,7 @@
 ## ClusteringResult 
 ##---------------------------------------------------------------------------------------------------------
 setClass("ClusteringResult",
-         representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space="list",minimum.degree.sum="numeric"))
+         representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space="eigen",minimum.degree.sum="numeric"))
 ##===========================================================================================================================
 
 

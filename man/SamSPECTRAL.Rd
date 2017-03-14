@@ -12,7 +12,7 @@
 
 \usage{
 SamSPECTRAL(data.points, dimensions=1:dim(data.points)[2], normal.sigma, separation.factor,number.of.clusters = "NA", scale=rep(1,dim(data.points)[2]),
-	    talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=100,
+	    talk = TRUE, precision = 6, eigenvalues.num =NA, return_only.labels=TRUE, do.sampling=TRUE, beta=4, stabilizer=1000,
 	    k.for_kmeans = "NA", maximum.number.of.clusters=30, m=3000,
 	    minimum.eigenvalue = "NA", previous.result = NULL,
 	    replace.inf.with.extremum=TRUE, minimum.degree=0, one.line=FALSE, doOrderLabels=TRUE)

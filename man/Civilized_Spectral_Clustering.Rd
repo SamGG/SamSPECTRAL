@@ -74,7 +74,8 @@
         \item{number.of.clusters }{
             A list containing the desired cluster numbers.}
         \item{eigen.space}{
-            The eigen vectors and eigen values of the normalized adjacency matrix computed for spectral clustering.}
+          The eigen vectors and eigen values of the normalized adjacency
+	  matrix computed by the eigen() function for spectral clustering.}
     }
 }
 
