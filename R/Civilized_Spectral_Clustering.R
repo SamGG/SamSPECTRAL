@@ -11,10 +11,12 @@
 ## The class 
 ##defined for output of the function in this file, namely: Civilized_Spectral_Clustering().=
 ##---------------------------------------------------------------------------------------------------------
-## ClusteringResult 
-##---------------------------------------------------------------------------------------------------------
+## ClusteringResult
+## The eigen function used to output an object of class "list" in R 3.3.0 but this may  change to "eigne" class according to the current devel verion of R.
+## --Habil Zare, 2017-03-15
+##-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 setClass("ClusteringResult",
-         representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space="eigen",minimum.degree.sum="numeric"))
+         representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space=class(eigen(cbind(1, c(1,-1)))), minimum.degree.sum="numeric"))
 ##===========================================================================================================================
 
 
