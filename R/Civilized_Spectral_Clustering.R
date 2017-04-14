@@ -15,6 +15,7 @@
 ## The eigen function used to output an object of class "list" in R 3.3.0 but this may  change to "eigne" class according to the current devel verion of R.
 ## --Habil Zare, 2017-03-15
 ##-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+setOldClass(class(eigen(cbind(1, c(1,-1)))))
 setClass("ClusteringResult",
          representation(labels.for_num.of.clusters="list", number.of.clusters="numeric", eigen.space=class(eigen(cbind(1, c(1,-1)))), minimum.degree.sum="numeric"))
 ##===========================================================================================================================
