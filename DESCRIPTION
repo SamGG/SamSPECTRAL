@@ -1,7 +1,7 @@
 Package: SamSPECTRAL
 Type: Package
 Title: Identifies cell population in flow cytometry data.
-Version: 1.36.0
+Version: 1.37.0
 Date: 2018-05-31
 Author: Habil Zare and Parisa Shooshtari
 Maintainer: Habil <zare@u.washington.edu>
